@@ -1,0 +1,27 @@
+{
+  "name": "meridian-alliance-trust-uk",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/next-workflow.mjs dev",
+    "build": "node scripts/next-workflow.mjs build",
+    "start": "node scripts/next-workflow.mjs start",
+    "preview": "node scripts/next-workflow.mjs preview",
+    "typecheck": "tsc --noEmit",
+    "launch-check": "node scripts/launch-check.mjs"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}

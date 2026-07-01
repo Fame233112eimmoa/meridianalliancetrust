@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #faf7f7;
+  --foreground: #171717;
+  --muted: #65595a;
+  --border: #eadfe0;
+  --surface: #ffffff;
+  --font-sans:
+    "Avenir Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia,
+    serif;
+}
+
+@layer base {
+  * {
+    @apply border-stone-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    @apply antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.03em;
+  }
+
+  ::selection {
+    @apply bg-accent/20 text-stone-950;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .panel {
+    @apply rounded-[2rem] border border-stone-200/80 bg-white shadow-soft;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.28em] text-stone-500;
+  }
+
+  .input-field {
+    @apply mt-2 w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5 text-sm text-stone-900 outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20 placeholder:text-stone-400;
+  }
+
+  .surface-muted {
+    @apply rounded-[1.75rem] border border-[#ead8da] bg-[#fcf7f8];
+  }
+}
