@@ -4,6 +4,12 @@ import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-acc
 import { buildRedirectUrl } from "@/lib/request-url";
 
 const encoder = new TextEncoder();
+const requiredPrivateAccessEnvNames = [
+  "PRIVATE_ACCESS_EMAIL",
+  "PRIVATE_ACCESS_PASSWORD",
+  "PRIVATE_ACCESS_OTP",
+  "PRIVATE_ACCESS_SESSION_SECRET",
+] as const;
 
 function normalizeEmail(value: string) {
   return value.trim().toLowerCase();
@@ -17,6 +23,10 @@ function getRequiredPrivateAccessEnv(name: string) {
   }
 
   return value;
+}
+
+function hasPrivateAccessConfiguration() {
+  return requiredPrivateAccessEnvNames.every((name) => Boolean(process.env[name]?.trim()));
 }
 
 function toHex(buffer: ArrayBuffer) {
@@ -88,6 +98,19 @@ function clearPrivateCookies(response: NextResponse) {
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+
+  if (
+    (pathname.startsWith(privateAccessConfig.otpPath) ||
+      pathname.startsWith(privateAccessConfig.portalPath)) &&
+    !hasPrivateAccessConfiguration()
+  ) {
+    const response = NextResponse.redirect(
+      buildRedirectUrl(request, `${privateAccessConfig.loginPath}?error=unavailable`),
+    );
+    clearPrivateCookies(response);
+    return response;
+  }
+
   const authenticated = await hasValidCookie(
     "authenticated",
     request.cookies.get(privateAccessCookieNames.authenticated)?.value,

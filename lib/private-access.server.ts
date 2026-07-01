@@ -4,6 +4,13 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest, NextResponse } from "next/server";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
 
+const requiredPrivateAccessEnvNames = [
+  "PRIVATE_ACCESS_EMAIL",
+  "PRIVATE_ACCESS_PASSWORD",
+  "PRIVATE_ACCESS_OTP",
+  "PRIVATE_ACCESS_SESSION_SECRET",
+] as const;
+
 function normalizeEmail(value: string) {
   return value.trim().toLowerCase();
 }
@@ -96,6 +103,10 @@ function setCookie(
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   });
+}
+
+export function hasPrivateAccessConfiguration() {
+  return requiredPrivateAccessEnvNames.every((name) => Boolean(process.env[name]?.trim()));
 }
 
 export function isApprovedEmail(email: string) {

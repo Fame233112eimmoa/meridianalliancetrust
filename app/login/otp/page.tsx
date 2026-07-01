@@ -9,6 +9,7 @@ import {
 } from "@/lib/private-access";
 import {
   hasAuthenticatedAccessFromCookieValue,
+  hasPrivateAccessConfiguration,
   hasPendingAccessFromCookieValue,
 } from "@/lib/private-access.server";
 import { buildPrivateMetadata } from "@/lib/seo";
@@ -26,6 +27,10 @@ type LoginOtpPageProps = {
 };
 
 export default async function LoginOtpPage({ searchParams }: LoginOtpPageProps) {
+  if (!hasPrivateAccessConfiguration()) {
+    redirect(`${privateAccessConfig.loginPath}?error=unavailable`);
+  }
+
   const cookieStore = await cookies();
   const authenticated = hasAuthenticatedAccessFromCookieValue(
     cookieStore.get(privateAccessCookieNames.authenticated)?.value,

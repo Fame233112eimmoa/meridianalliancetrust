@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { privateAccessConfig } from "@/lib/private-access";
 import {
   clearPrivateAccess,
+  hasPrivateAccessConfiguration,
   hasPendingAccessFromRequest,
   isApprovedOtp,
   setAuthenticatedAccess,
@@ -9,6 +10,15 @@ import {
 import { buildRedirectUrl } from "@/lib/request-url";
 
 export async function POST(request: NextRequest) {
+  if (!hasPrivateAccessConfiguration()) {
+    const response = NextResponse.redirect(
+      buildRedirectUrl(request, `${privateAccessConfig.loginPath}?error=unavailable`),
+      303,
+    );
+    clearPrivateAccess(response);
+    return response;
+  }
+
   if (!hasPendingAccessFromRequest(request)) {
     const response = NextResponse.redirect(
       buildRedirectUrl(request, privateAccessConfig.loginPath),
