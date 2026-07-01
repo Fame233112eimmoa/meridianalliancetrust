@@ -8,11 +8,22 @@ const nextBin = require.resolve("next/dist/bin/next");
 
 const mode = process.argv[2];
 const passthroughArgs = process.argv.slice(3);
+const isVercelEnvironment = Boolean(process.env.VERCEL);
 
 const DIST_DIRS = {
   dev: ".next-dev",
   production: ".next-prod",
 };
+
+function getProductionDistDir() {
+  return isVercelEnvironment ? undefined : DIST_DIRS.production;
+}
+
+function getProductionEnvOverrides() {
+  const distDir = getProductionDistDir();
+
+  return distDir ? { NEXT_DIST_DIR: distDir } : {};
+}
 
 function hasPortArg(args) {
   return args.some((arg) => arg === "--port" || arg === "-p");
@@ -71,7 +82,8 @@ function runNext(command, args, envOverrides = {}) {
 }
 
 function ensureProductionBuildExists() {
-  return existsSync(join(process.cwd(), DIST_DIRS.production, "BUILD_ID"));
+  const distDir = getProductionDistDir() ?? ".next";
+  return existsSync(join(process.cwd(), distDir, "BUILD_ID"));
 }
 
 async function main() {
@@ -84,24 +96,20 @@ async function main() {
     }
 
     case "build": {
-      process.exitCode = await runNext("build", passthroughArgs, {
-        NEXT_DIST_DIR: DIST_DIRS.production,
-      });
+      process.exitCode = await runNext("build", passthroughArgs, getProductionEnvOverrides());
       return;
     }
 
     case "start": {
       if (!ensureProductionBuildExists()) {
         console.error(
-          `No production build was found in ${DIST_DIRS.production}. Run "npm run build" or use "npm run preview" to rebuild and launch a fresh preview.`,
+          `No production build was found in ${getProductionDistDir() ?? ".next"}. Run "npm run build" or use "npm run preview" to rebuild and launch a fresh preview.`,
         );
         process.exitCode = 1;
         return;
       }
 
-      process.exitCode = await runNext("start", passthroughArgs, {
-        NEXT_DIST_DIR: DIST_DIRS.production,
-      });
+      process.exitCode = await runNext("start", passthroughArgs, getProductionEnvOverrides());
       return;
     }
 
