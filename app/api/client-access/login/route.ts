@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { privateAccessConfig } from "@/lib/private-access";
 import {
   clearPrivateAccess,
@@ -6,19 +6,16 @@ import {
   isApprovedPassword,
   setPendingAccess,
 } from "@/lib/private-access.server";
+import { buildRedirectUrl } from "@/lib/request-url";
 
-function buildRedirect(request: Request, path: string) {
-  return new URL(path, request.url);
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const email = String(formData.get("email") || "");
   const password = String(formData.get("password") || "");
 
   if (!isApprovedEmail(email) || !isApprovedPassword(password)) {
     const response = NextResponse.redirect(
-      buildRedirect(request, `${privateAccessConfig.loginPath}?error=credentials`),
+      buildRedirectUrl(request, `${privateAccessConfig.loginPath}?error=credentials`),
       303,
     );
 
@@ -26,11 +23,11 @@ export async function POST(request: Request) {
     return response;
   }
 
-  const response = NextResponse.redirect(buildRedirect(request, privateAccessConfig.otpPath), 303);
+  const response = NextResponse.redirect(buildRedirectUrl(request, privateAccessConfig.otpPath), 303);
   setPendingAccess(response);
   return response;
 }
 
-export function GET(request: Request) {
-  return NextResponse.redirect(buildRedirect(request, privateAccessConfig.loginPath), 303);
+export function GET(request: NextRequest) {
+  return NextResponse.redirect(buildRedirectUrl(request, privateAccessConfig.loginPath), 303);
 }

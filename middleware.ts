@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
+import { buildRedirectUrl } from "@/lib/request-url";
 
 const encoder = new TextEncoder();
 
@@ -97,14 +98,16 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const response = NextResponse.redirect(new URL(privateAccessConfig.loginPath, request.url));
+    const response = NextResponse.redirect(
+      buildRedirectUrl(request, privateAccessConfig.loginPath),
+    );
     clearPrivateCookies(response);
     return response;
   }
 
   if (pathname.startsWith(privateAccessConfig.otpPath)) {
     if (authenticated) {
-      return NextResponse.redirect(new URL(privateAccessConfig.portalPath, request.url));
+      return NextResponse.redirect(buildRedirectUrl(request, privateAccessConfig.portalPath));
     }
 
     const pending = await hasValidCookie(
@@ -116,7 +119,9 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const response = NextResponse.redirect(new URL(privateAccessConfig.loginPath, request.url));
+    const response = NextResponse.redirect(
+      buildRedirectUrl(request, privateAccessConfig.loginPath),
+    );
     clearPrivateCookies(response);
     return response;
   }

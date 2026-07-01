@@ -6,14 +6,14 @@ import {
   isApprovedOtp,
   setAuthenticatedAccess,
 } from "@/lib/private-access.server";
-
-function buildRedirect(request: Request, path: string) {
-  return new URL(path, request.url);
-}
+import { buildRedirectUrl } from "@/lib/request-url";
 
 export async function POST(request: NextRequest) {
   if (!hasPendingAccessFromRequest(request)) {
-    const response = NextResponse.redirect(buildRedirect(request, privateAccessConfig.loginPath), 303);
+    const response = NextResponse.redirect(
+      buildRedirectUrl(request, privateAccessConfig.loginPath),
+      303,
+    );
     clearPrivateAccess(response);
     return response;
   }
@@ -23,13 +23,13 @@ export async function POST(request: NextRequest) {
 
   if (!isApprovedOtp(otp)) {
     return NextResponse.redirect(
-      buildRedirect(request, `${privateAccessConfig.otpPath}?error=otp`),
+      buildRedirectUrl(request, `${privateAccessConfig.otpPath}?error=otp`),
       303,
     );
   }
 
   const response = NextResponse.redirect(
-    buildRedirect(request, privateAccessConfig.portalPath),
+    buildRedirectUrl(request, privateAccessConfig.portalPath),
     303,
   );
   setAuthenticatedAccess(response);
@@ -37,5 +37,5 @@ export async function POST(request: NextRequest) {
 }
 
 export function GET(request: NextRequest) {
-  return NextResponse.redirect(buildRedirect(request, privateAccessConfig.loginPath), 303);
+  return NextResponse.redirect(buildRedirectUrl(request, privateAccessConfig.loginPath), 303);
 }
