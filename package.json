@@ -8,7 +8,8 @@
     "start": "node scripts/next-workflow.mjs start",
     "preview": "node scripts/next-workflow.mjs preview",
     "typecheck": "tsc --noEmit",
-    "launch-check": "node scripts/launch-check.mjs"
+    "launch-check": "node scripts/launch-check.mjs",
+    "launch-check:strict": "node scripts/launch-check.mjs --strict"
   },
   "dependencies": {
     "next": "^15.1.0",

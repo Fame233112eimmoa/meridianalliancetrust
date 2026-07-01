@@ -19,6 +19,10 @@ Before a live deployment, run:
 1. `npm run launch-check`
 2. `npm run build`
 
+If you want the launch check to fail on missing live-domain configuration, run:
+
+1. `npm run launch-check:strict`
+
 The project now keeps development output and production preview output in separate build directories, so switching between `dev`, `build`, `start`, and `preview` does not corrupt the local preview state.
 
 ## Before You Go Live

@@ -2,6 +2,11 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const projectRoot = process.cwd();
+const isStrictMode =
+  process.argv.includes("--strict") ||
+  process.env.CI === "true" ||
+  process.env.VERCEL === "1" ||
+  process.env.VERCEL === "true";
 
 function parseEnvFile(path) {
   if (!existsSync(path)) {
@@ -101,6 +106,7 @@ const envFiles = [
 ];
 
 const findings = [];
+const deploymentFindings = [];
 const warnings = [];
 const passes = [];
 
@@ -115,27 +121,29 @@ const privateAccessOtp = getEnvValue("PRIVATE_ACCESS_OTP", envFiles);
 const privateAccessSessionSecret = getEnvValue("PRIVATE_ACCESS_SESSION_SECRET", envFiles);
 
 if (!siteUrl) {
-  findings.push("Set NEXT_PUBLIC_SITE_URL to the final public HTTPS domain.");
+  deploymentFindings.push("Set NEXT_PUBLIC_SITE_URL to the final public HTTPS domain.");
 } else {
   try {
     const parsedSiteUrl = new URL(siteUrl);
 
     if (parsedSiteUrl.protocol !== "https:") {
-      findings.push("NEXT_PUBLIC_SITE_URL must use HTTPS.");
+      deploymentFindings.push("NEXT_PUBLIC_SITE_URL must use HTTPS.");
     } else if (isLocalHostname(parsedSiteUrl.hostname)) {
-      findings.push("NEXT_PUBLIC_SITE_URL must not point to localhost or another local hostname.");
+      deploymentFindings.push(
+        "NEXT_PUBLIC_SITE_URL must not point to localhost or another local hostname.",
+      );
     } else {
       passes.push(`Public site URL is configured as ${parsedSiteUrl.origin}.`);
     }
   } catch {
-    findings.push("NEXT_PUBLIC_SITE_URL must be a valid absolute URL.");
+    deploymentFindings.push("NEXT_PUBLIC_SITE_URL must be a valid absolute URL.");
   }
 }
 
 if (googleVerification || hasGoogleVerificationFile()) {
   passes.push("Google Search Console verification is configured.");
 } else {
-  findings.push(
+  warnings.push(
     "Add GOOGLE_SITE_VERIFICATION or place the Google verification HTML file in public/.",
   );
 }
@@ -195,14 +203,22 @@ if (!checkFile("README.md")) {
 }
 
 console.log("Launch Readiness Check");
+console.log(`Mode: ${isStrictMode ? "strict" : "local"}`);
 
 printList("Passes", passes);
+printList("Remaining Live Setup", deploymentFindings);
 printList("Warnings", warnings);
 printList("Required Fixes", findings);
 
-if (findings.length) {
-  console.log(`\nStatus: FAILED (${findings.length} required fix${findings.length === 1 ? "" : "es"})`);
+const blockingFindings = findings.length + (isStrictMode ? deploymentFindings.length : 0);
+
+if (blockingFindings) {
+  console.log(
+    `\nStatus: FAILED (${blockingFindings} required fix${blockingFindings === 1 ? "" : "es"})`,
+  );
   process.exitCode = 1;
 } else {
-  console.log("\nStatus: PASS");
+  console.log(
+    `\nStatus: PASS${deploymentFindings.length ? " (live domain still needs to be set before launch)" : ""}`,
+  );
 }
