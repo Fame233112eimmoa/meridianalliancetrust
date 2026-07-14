@@ -4,7 +4,7 @@ import { AccountCard } from "@/components/dashboard/account-card";
 import { CardsOverview } from "@/components/dashboard/cards-overview";
 import {
   TransferReviewCard,
-  type TransferField,
+  type TransferSection,
 } from "@/components/dashboard/transfer-review-card";
 import { TransactionList } from "@/components/dashboard/transaction-list";
 import { Button } from "@/components/ui/button";
@@ -441,20 +441,92 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
         <RouteFrame page={page}>
           <TransferReviewCard
             description="Move funds between your active Meridian Alliance Trust UK accounts."
-            fields={[
+            sections={[
               {
-                label: "From account",
-                options: ["Everyday Checking", "Reserve Savings"],
-                defaultValue: "Everyday Checking",
+                title: "Transfer Setup",
+                description:
+                  "Select the Meridian accounts involved and choose when the transfer should be booked.",
+                fields: [
+                  {
+                    label: "From account",
+                    options: ["Everyday Checking", "Reserve Savings"],
+                    defaultValue: "Everyday Checking",
+                    hint: "Available funds are checked again at review and release.",
+                  },
+                  {
+                    label: "To account",
+                    options: ["Reserve Savings", "Everyday Checking"],
+                    defaultValue: "Reserve Savings",
+                    hint: "Only eligible Meridian accounts appear in this list.",
+                  },
+                  {
+                    label: "Amount",
+                    placeholder: "£0.00",
+                    type: "text",
+                    hint: "Enter the amount exactly as it should post to the destination account.",
+                  },
+                  {
+                    label: "Value date",
+                    type: "date",
+                    hint: "Instructions approved before 17:00 London time normally post the same business day.",
+                  },
+                ],
               },
               {
-                label: "To account",
-                options: ["Reserve Savings", "Everyday Checking"],
-                defaultValue: "Reserve Savings",
+                title: "Reference & Purpose",
+                description:
+                  "Add the statement reference and service classification for this internal movement.",
+                fields: [
+                  {
+                    label: "Reference",
+                    placeholder: "Reserve allocation July",
+                    hint: "This reference appears on both account statements.",
+                  },
+                  {
+                    label: "Transfer purpose",
+                    options: [
+                      "Reserve funding",
+                      "Liquidity movement",
+                      "Property allocation",
+                      "Portfolio reserve",
+                    ],
+                    defaultValue: "Reserve funding",
+                    hint: "Used for relationship review and payment categorisation.",
+                  },
+                  {
+                    label: "Client note",
+                    control: "textarea",
+                    placeholder: "Optional note for your internal record.",
+                    fullWidth: true,
+                    required: false,
+                    rows: 4,
+                    hint: "Saved with the instruction summary but not sent outside the bank.",
+                  },
+                ],
               },
-              { label: "Amount", placeholder: "£0.00", type: "text" },
-              { label: "Reference", placeholder: "Monthly reserve funding" },
-            ] satisfies TransferField[]}
+            ] satisfies TransferSection[]}
+            contextItems={[
+              {
+                label: "Execution Window",
+                value: "Same-day before 17:00",
+                detail: "Internal movements are usually visible immediately once released.",
+              },
+              {
+                label: "Service Route",
+                value: "Meridian to Meridian",
+                detail: "Transfers remain within your managed relationship accounts.",
+              },
+              {
+                label: "High-Value Review",
+                value: "Relationship callback",
+                detail: "Large instructions may still prompt a courtesy verification call.",
+              },
+            ]}
+            checklist={[
+              "Confirm the debit account, destination account, and amount before sending.",
+              "Use a clear reference so the movement is easy to identify on both statements.",
+              "Review the value date if the transfer is intended for a future booking day.",
+            ]}
             submitLabel="Review Transfer"
             title="Internal Transfer"
           />
@@ -466,13 +538,113 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
         <RouteFrame page={page}>
           <TransferReviewCard
             description="Enter beneficiary details carefully before confirming a domestic transfer."
-            fields={[
-              { label: "Beneficiary name", placeholder: "Enter full beneficiary name" },
-              { label: "Sort code", placeholder: "00-00-00" },
-              { label: "Account number", placeholder: "12345678" },
-              { label: "Amount", placeholder: "£0.00", type: "text" },
-              { label: "Payment reference", placeholder: "Invoice or reference", fullWidth: true },
-            ] satisfies TransferField[]}
+            sections={[
+              {
+                title: "Debit Account",
+                description:
+                  "Choose the account to debit and set the timing for this domestic payment.",
+                fields: [
+                  {
+                    label: "From account",
+                    options: ["Everyday Checking", "Reserve Savings"],
+                    defaultValue: "Everyday Checking",
+                    hint: "Domestic payments are normally released from the primary current account.",
+                  },
+                  {
+                    label: "Amount",
+                    placeholder: "£0.00",
+                    type: "text",
+                    hint: "Enter the gross amount to be sent to the beneficiary.",
+                  },
+                  {
+                    label: "Payment date",
+                    type: "date",
+                    hint: "Same-day domestic release depends on the payment window and review outcome.",
+                  },
+                  {
+                    label: "Payment reference",
+                    placeholder: "Property invoice 1482",
+                    hint: "Visible to the beneficiary on receipt where supported.",
+                  },
+                ],
+              },
+              {
+                title: "Beneficiary Details",
+                description:
+                  "Enter the recipient and destination bank details exactly as provided.",
+                fields: [
+                  {
+                    label: "Beneficiary name",
+                    placeholder: "Enter full beneficiary name",
+                    hint: "Use the account name registered at the receiving bank.",
+                  },
+                  {
+                    label: "Bank name",
+                    placeholder: "Receiving bank name",
+                    hint: "Useful for relationship review and beneficiary verification.",
+                  },
+                  {
+                    label: "Sort code",
+                    placeholder: "00-00-00",
+                    hint: "Enter the six-digit branch sort code.",
+                  },
+                  {
+                    label: "Account number",
+                    placeholder: "12345678",
+                    hint: "UK domestic account number for the beneficiary.",
+                  },
+                ],
+              },
+              {
+                title: "Payment Details",
+                description:
+                  "Record the payment purpose and any internal servicing note for this instruction.",
+                fields: [
+                  {
+                    label: "Purpose of payment",
+                    options: [
+                      "Professional services",
+                      "Property costs",
+                      "Family support",
+                      "Invoice settlement",
+                    ],
+                    defaultValue: "Professional services",
+                    hint: "Used for payment screening and servicing notes.",
+                  },
+                  {
+                    label: "Client note",
+                    control: "textarea",
+                    placeholder: "Optional note for your relationship team.",
+                    fullWidth: true,
+                    required: false,
+                    rows: 4,
+                    hint: "This note remains within the bank and is not shown to the beneficiary.",
+                  },
+                ],
+              },
+            ] satisfies TransferSection[]}
+            contextItems={[
+              {
+                label: "Delivery Rail",
+                value: "Faster Payments / CHAPS",
+                detail: "The bank selects the appropriate rail based on amount and release timing.",
+              },
+              {
+                label: "Cut-off",
+                value: "15:30 London time",
+                detail: "Instructions approved after cut-off may move to the next business day.",
+              },
+              {
+                label: "Beneficiary Review",
+                value: "Callback for new payees",
+                detail: "New or amended beneficiary details may require direct verification.",
+              },
+            ]}
+            checklist={[
+              "Verify the beneficiary name, sort code, and account number before release.",
+              "Keep the payment reference concise and recognisable for the recipient.",
+              "High-value domestic payments may be delayed for an additional callback review.",
+            ]}
             submitLabel="Review Domestic Transfer"
             title="Transfer to Another Bank"
           />
@@ -484,19 +656,143 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
         <RouteFrame page={page}>
           <TransferReviewCard
             description="Provide the required recipient and settlement details for a cross-border payment."
-            fields={[
+            sections={[
               {
-                label: "From account",
-                options: ["Everyday Checking", "Reserve Savings"],
-                defaultValue: "Everyday Checking",
+                title: "Debit & Currency",
+                description:
+                  "Choose the debit account, transfer currency, and requested value date for settlement.",
+                fields: [
+                  {
+                    label: "From account",
+                    options: ["Everyday Checking", "Reserve Savings"],
+                    defaultValue: "Everyday Checking",
+                    hint: "Cross-border transfers usually debit your current account after final review.",
+                  },
+                  {
+                    label: "Currency",
+                    options: ["USD", "EUR", "GBP", "CHF", "AED"],
+                    defaultValue: "USD",
+                    hint: "The settlement currency used for the outgoing payment.",
+                  },
+                  {
+                    label: "Amount",
+                    placeholder: "£0.00",
+                    type: "text",
+                    hint: "Enter the payment amount in the selected settlement currency.",
+                  },
+                  {
+                    label: "Value date",
+                    type: "date",
+                    hint: "Cut-off and compliance review affect whether same-day release is available.",
+                  },
+                ],
               },
-              { label: "Beneficiary name", placeholder: "Enter beneficiary name" },
-              { label: "IBAN / Account", placeholder: "Recipient account number" },
-              { label: "SWIFT / BIC", placeholder: "Recipient bank SWIFT/BIC" },
-              { label: "Country", placeholder: "Destination country" },
-              { label: "Amount", placeholder: "£0.00", type: "text" },
-              { label: "Payment purpose", placeholder: "Transfer purpose", fullWidth: true },
-            ] satisfies TransferField[]}
+              {
+                title: "Beneficiary & Bank",
+                description:
+                  "Provide the beneficiary identity and destination bank details exactly as instructed.",
+                fields: [
+                  {
+                    label: "Beneficiary name",
+                    placeholder: "Enter beneficiary name",
+                    hint: "Use the legal name held on the recipient account.",
+                  },
+                  {
+                    label: "Beneficiary bank",
+                    placeholder: "Recipient bank name",
+                    hint: "Enter the receiving institution handling the transfer.",
+                  },
+                  {
+                    label: "Country",
+                    options: [
+                      "United States",
+                      "Switzerland",
+                      "United Arab Emirates",
+                      "Singapore",
+                      "France",
+                    ],
+                    defaultValue: "United States",
+                    hint: "Choose the beneficiary bank country for settlement routing.",
+                  },
+                  {
+                    label: "IBAN / Account",
+                    placeholder: "Recipient account number or IBAN",
+                    hint: "Use the exact IBAN or local account number provided by the beneficiary.",
+                  },
+                  {
+                    label: "SWIFT / BIC",
+                    placeholder: "Recipient bank SWIFT / BIC",
+                    fullWidth: true,
+                    hint: "Required for most international settlements and correspondent bank routing.",
+                  },
+                ],
+              },
+              {
+                title: "Settlement Instructions",
+                description:
+                  "Select the charging basis and describe the business purpose for the cross-border payment.",
+                fields: [
+                  {
+                    label: "Charge option",
+                    options: [
+                      "SHA - Shared charges",
+                      "OUR - Sender pays all charges",
+                      "BEN - Beneficiary pays charges",
+                    ],
+                    defaultValue: "SHA - Shared charges",
+                    hint: "Determines how correspondent bank charges are allocated.",
+                  },
+                  {
+                    label: "Payment reference",
+                    placeholder: "Project reserve funding",
+                    hint: "Reference shown with the outgoing transfer where supported.",
+                  },
+                  {
+                    label: "Purpose of payment",
+                    options: [
+                      "Investment funding",
+                      "Property purchase",
+                      "Family support",
+                      "Supplier settlement",
+                      "Tuition fees",
+                    ],
+                    defaultValue: "Investment funding",
+                    hint: "Used during compliance screening and settlement review.",
+                  },
+                  {
+                    label: "Additional instructions",
+                    control: "textarea",
+                    placeholder: "Optional note for beneficiary servicing or your relationship team.",
+                    fullWidth: true,
+                    required: false,
+                    rows: 4,
+                    hint: "For internal servicing notes or clarification that may assist the release team.",
+                  },
+                ],
+              },
+            ] satisfies TransferSection[]}
+            contextItems={[
+              {
+                label: "FX Handling",
+                value: "Rate fixed at release",
+                detail: "The applicable rate is confirmed when the instruction clears review.",
+              },
+              {
+                label: "Cut-off",
+                value: "14:00 London time",
+                detail: "Later submissions may settle on the next available business day.",
+              },
+              {
+                label: "Compliance Path",
+                value: "Destination and purpose review",
+                detail: "Cross-border payments remain subject to documentary and sanctions screening.",
+              },
+            ]}
+            checklist={[
+              "Confirm the beneficiary bank, IBAN/account number, and SWIFT/BIC before release.",
+              "Make sure the chosen currency and charge option match the beneficiary instructions.",
+              "Supporting documents may still be requested for high-value or first-time overseas payments.",
+            ]}
             submitLabel="Review International Transfer"
             title="International Transfer"
           />
