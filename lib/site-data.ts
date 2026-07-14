@@ -51,7 +51,7 @@ export const customerProfile = {
   firstName: "Richard",
   lastName: "Bahcnam",
   fullName: "Richard Bahcnam",
-  email: "thayenne.dancini@example.com",
+  email: "richard.bahcnam.demo@example.com",
   relationshipManager: "Sophie Bennett",
   mailingAddress: "18 Belgrave Square, London SW1X 8PP",
 };
