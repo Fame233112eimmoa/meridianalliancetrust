@@ -137,7 +137,7 @@ export function TransferReviewCard({
       setShowPreview(false);
       setSendState("failed");
       timeoutRef.current = null;
-    }, 7000);
+    }, 4000);
   }
 
   return (
@@ -386,8 +386,15 @@ export function TransferReviewCard({
           />
 
           <section className="panel relative z-10 w-full max-w-md p-5 sm:p-6">
-            <p className="eyebrow">Transfer Failed</p>
-            <h3 className="mt-2 text-2xl text-stone-950">Unable to send transfer</h3>
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-[1.4rem] border border-[#d7afb2] bg-[linear-gradient(135deg,rgba(139,30,36,0.14)_0%,rgba(252,245,246,1)_100%)] shadow-sm">
+                <span className="text-3xl font-semibold leading-none text-accent-deep">!</span>
+              </div>
+              <div>
+                <p className="eyebrow">Transfer Failed</p>
+                <h3 className="mt-2 text-2xl text-stone-950">Unable to send transfer</h3>
+              </div>
+            </div>
             <p className="mt-4 rounded-[1.25rem] border border-[#d8b8bb] bg-[#fcf5f6] px-4 py-4 text-sm leading-7 text-[#7a1c22]">
               {failureReason}
             </p>
