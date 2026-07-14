@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { StructuredData } from "@/components/seo/structured-data";
 import { PublicShell } from "@/components/site/public-shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { buildIndexableMetadata, siteConfig } from "@/lib/seo";
+import { buildIndexableMetadata, buildPageStructuredData } from "@/lib/seo";
 
 export const metadata: Metadata = buildIndexableMetadata({
   path: "/",
-  description: siteConfig.description,
+  title: "Private Banking Support",
+  description:
+    "Explore private banking support, secure login guidance, and client service pathways at Meridian Alliance Trust UK.",
+});
+
+const structuredData = buildPageStructuredData({
+  path: "/",
+  title: "Private Banking Support",
+  description:
+    "Explore private banking support, secure login guidance, and client service pathways at Meridian Alliance Trust UK.",
 });
 
 const featureCards = [
@@ -48,17 +59,23 @@ const heroHighlights = [
 export default function HomePage() {
   return (
     <PublicShell>
+      <StructuredData data={structuredData} id="home-structured-data" />
       <section className="section-shell pb-10 pt-4 sm:pb-12 sm:pt-6 lg:pb-16 lg:pt-8">
         <div className="overflow-hidden rounded-[2.5rem] border border-stone-200/80 bg-white shadow-soft">
           <div className="relative">
-            <div
-              className="absolute inset-0 bg-cover bg-[position:72%_center]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.92) 30%, rgba(252,252,251,0.58) 54%, rgba(15,23,42,0.14) 100%), url('/images/meridian-home-hero.jpg')",
-              }}
-            />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.4),_transparent_45%)]" />
+            <div className="absolute inset-0">
+              <Image
+                alt="Historic London architecture reflecting Meridian Alliance Trust UK's British private banking heritage"
+                src="/images/meridian-home-hero.jpg"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+                style={{ objectPosition: "72% center" }}
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(252,252,251,0.98)_0%,rgba(252,252,251,0.92)_30%,rgba(252,252,251,0.58)_54%,rgba(15,23,42,0.14)_100%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.4),_transparent_45%)]" />
+            </div>
             <div className="relative grid min-h-[32rem] gap-8 px-6 py-7 sm:px-8 sm:py-8 lg:min-h-[38rem] lg:grid-cols-[1.06fr_0.94fr] lg:px-12 lg:py-12">
               <div className="flex flex-col justify-between gap-8">
                 <div className="max-w-3xl space-y-5">
@@ -134,7 +151,13 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
+        <div
+          className="mt-6 grid gap-5 lg:grid-cols-[0.82fr_1.18fr]"
+          aria-labelledby="home-highlights-heading"
+        >
+          <h2 id="home-highlights-heading" className="sr-only">
+            Meridian Alliance Trust UK highlights
+          </h2>
           <Card
             title="A signature card presentation with a refined service feel"
             description="Card servicing, payment guidance, and client support are presented in a clear, polished public experience."
@@ -151,16 +174,22 @@ export default function HomePage() {
           </Card>
 
           <div className="panel overflow-hidden bg-[linear-gradient(135deg,#180607_0%,#401014_44%,#8B1E24_100%)] p-4 sm:p-5">
-            <img
-              alt="Meridian Alliance Trust UK premium card"
-              className="w-full rounded-[1.75rem] object-cover"
+            <Image
+              alt="Meridian Alliance Trust UK premium payment card"
+              className="h-auto w-full rounded-[1.75rem] object-cover"
               src="/images/meridian-premium-card.png"
+              width={1122}
+              height={1402}
+              sizes="(min-width: 1024px) 42rem, 100vw"
             />
           </div>
         </div>
       </section>
 
-      <section className="section-shell py-6 lg:py-10">
+      <section className="section-shell py-6 lg:py-10" aria-labelledby="home-services-heading">
+        <h2 id="home-services-heading" className="sr-only">
+          Meridian Alliance Trust UK public services
+        </h2>
         <div className="grid gap-5 lg:grid-cols-3">
           {featureCards.map((item) => (
             <Card key={item.title} title={item.title} description={item.copy}>
@@ -196,7 +225,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-shell py-8 lg:py-14">
+      <section className="section-shell py-8 lg:py-14" aria-labelledby="home-journeys-heading">
+        <h2 id="home-journeys-heading" className="sr-only">
+          Explore Meridian Alliance Trust UK journeys
+        </h2>
         <div className="grid gap-5 lg:grid-cols-3">
           <Card
             title="Debit and credit cards"

@@ -38,30 +38,45 @@ function isLocalLikeSiteUrl(value: string) {
 
 const explicitSiteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim() || "";
+const productionSiteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() || "";
+const previewSiteUrl = process.env.VERCEL_URL?.trim() || "";
+const vercelEnvironment = process.env.VERCEL_ENV?.trim().toLowerCase() || "";
+const isPreviewDeployment =
+  process.env.VERCEL === "1" && Boolean(vercelEnvironment) && vercelEnvironment !== "production";
+const preferredSiteUrl = explicitSiteUrl || productionSiteUrl;
 
-const rawSiteUrl =
-  explicitSiteUrl ||
-  process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
-  process.env.VERCEL_URL?.trim() ||
-  LOCAL_FALLBACK_SITE_URL;
+const rawSiteUrl = preferredSiteUrl || previewSiteUrl || LOCAL_FALLBACK_SITE_URL;
 
 export const siteConfig = {
   name: "Meridian Alliance Trust UK",
+  legalName: "Meridian Alliance Trust UK",
   description:
-    "Website for Meridian Alliance Trust UK with service information, support pathways, and a protected dashboard login.",
+    "Private banking website for Meridian Alliance Trust UK with account-opening guidance, client support, and a protected dashboard login.",
   url: normalizeSiteUrl(rawSiteUrl),
   locale: "en_GB",
+  language: "en-GB",
   logoPath: "/images/meridian-logo-monogram.jpg",
   ogImagePath: "/images/meridian-home-hero.jpg",
+  ogImageAlt: "Historic London architecture representing Meridian Alliance Trust UK's British banking heritage",
+  ogImageWidth: 6000,
+  ogImageHeight: 4000,
   googleVerification:
     process.env.GOOGLE_SITE_VERIFICATION?.trim() ||
     process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() ||
     "",
+  bingVerification:
+    process.env.BING_SITE_VERIFICATION?.trim() ||
+    process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION?.trim() ||
+    "",
+  contactEmail: "clientservices@meridianalliancetrustuk.example",
+  contactPhone: "+44 20 5555 0198",
+  areaServed: "GB",
 };
 
 export const indexableRoutes = ["/", "/create-account", "/contact", "/support"] as const;
 export const hasConfiguredSiteUrl = isExplicitlyConfigured(explicitSiteUrl);
-export const hasPublicSiteUrl = hasConfiguredSiteUrl && !isLocalLikeSiteUrl(siteConfig.url);
+export const hasPublicSiteUrl =
+  Boolean(preferredSiteUrl) && !isLocalLikeSiteUrl(siteConfig.url) && !isPreviewDeployment;
 
 export const indexRobots: NonNullable<Metadata["robots"]> = {
   index: true,
@@ -69,6 +84,9 @@ export const indexRobots: NonNullable<Metadata["robots"]> = {
   googleBot: {
     index: true,
     follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
   },
 };
 
@@ -96,18 +114,146 @@ export function getSiteStructuredData() {
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": absoluteUrl("/#organization"),
       name: siteConfig.name,
       url: siteConfig.url,
       logo: absoluteUrl(siteConfig.logoPath),
       description: siteConfig.description,
+      email: siteConfig.contactEmail,
+      telephone: siteConfig.contactPhone,
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: siteConfig.contactEmail,
+          telephone: siteConfig.contactPhone,
+          areaServed: siteConfig.areaServed,
+          availableLanguage: siteConfig.language,
+        },
+      ],
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": absoluteUrl("/#website"),
       name: siteConfig.name,
       url: siteConfig.url,
       description: siteConfig.description,
-      inLanguage: "en-GB",
+      inLanguage: siteConfig.language,
+      publisher: {
+        "@id": absoluteUrl("/#organization"),
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BankOrCreditUnion",
+      "@id": absoluteUrl("/#bank"),
+      name: siteConfig.legalName,
+      url: siteConfig.url,
+      image: absoluteUrl(siteConfig.ogImagePath),
+      logo: absoluteUrl(siteConfig.logoPath),
+      description: siteConfig.description,
+      areaServed: siteConfig.areaServed,
+      availableLanguage: siteConfig.language,
+      email: siteConfig.contactEmail,
+      telephone: siteConfig.contactPhone,
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "https://schema.org/Monday",
+            "https://schema.org/Tuesday",
+            "https://schema.org/Wednesday",
+            "https://schema.org/Thursday",
+            "https://schema.org/Friday",
+          ],
+          opens: "08:00",
+          closes: "18:00",
+        },
+      ],
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: siteConfig.contactEmail,
+          telephone: siteConfig.contactPhone,
+          areaServed: siteConfig.areaServed,
+          availableLanguage: siteConfig.language,
+        },
+      ],
+      parentOrganization: {
+        "@id": absoluteUrl("/#organization"),
+      },
+    },
+  ];
+}
+
+export type BreadcrumbItem = {
+  label: string;
+  path: string;
+};
+
+type IndexablePageStructuredDataArgs = {
+  path: string;
+  title?: string;
+  description: string;
+  pageType?: "WebPage" | "CollectionPage" | "ContactPage";
+  breadcrumbs?: BreadcrumbItem[];
+};
+
+export function buildPageStructuredData({
+  path,
+  title,
+  description,
+  pageType = "WebPage",
+  breadcrumbs = [],
+}: IndexablePageStructuredDataArgs) {
+  const canonical = absoluteUrl(path);
+  const breadcrumbId = `${canonical}#breadcrumb`;
+  const pageName = composeMetaTitle(title);
+  const webPage = {
+    "@context": "https://schema.org",
+    "@type": pageType,
+    "@id": canonical,
+    url: canonical,
+    name: pageName,
+    description,
+    inLanguage: siteConfig.language,
+    isPartOf: {
+      "@id": absoluteUrl("/#website"),
+    },
+    about: {
+      "@id": absoluteUrl("/#bank"),
+    },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: absoluteUrl(siteConfig.ogImagePath),
+    },
+    ...(breadcrumbs.length
+      ? {
+          breadcrumb: {
+            "@id": breadcrumbId,
+          },
+        }
+      : {}),
+  };
+
+  if (!breadcrumbs.length) {
+    return [webPage];
+  }
+
+  return [
+    webPage,
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "@id": breadcrumbId,
+      itemListElement: breadcrumbs.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.label,
+        item: absoluteUrl(item.path),
+      })),
     },
   ];
 }
@@ -141,7 +287,9 @@ export function buildIndexableMetadata({
       images: [
         {
           url: absoluteUrl(siteConfig.ogImagePath),
-          alt: siteConfig.name,
+          width: siteConfig.ogImageWidth,
+          height: siteConfig.ogImageHeight,
+          alt: siteConfig.ogImageAlt,
         },
       ],
     },
@@ -169,6 +317,20 @@ export function buildPrivateMetadata({
     alternates: {
       canonical: absoluteUrl(path),
     },
+    robots: noIndexRobots,
+  };
+}
+
+export function buildNoIndexMetadata({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}): Metadata {
+  return {
+    title,
+    description,
     robots: noIndexRobots,
   };
 }

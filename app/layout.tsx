@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  referrer: "strict-origin-when-cross-origin",
   manifest: "/manifest.webmanifest",
   category: "finance",
   icons: {
@@ -36,7 +39,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: absoluteUrl(siteConfig.ogImagePath),
-        alt: siteConfig.name,
+        width: siteConfig.ogImageWidth,
+        height: siteConfig.ogImageHeight,
+        alt: siteConfig.ogImageAlt,
       },
     ],
   },
@@ -49,8 +54,21 @@ export const metadata: Metadata = {
   verification: siteConfig.googleVerification
     ? {
         google: siteConfig.googleVerification,
+        ...(siteConfig.bingVerification
+          ? {
+              other: {
+                "msvalidate.01": siteConfig.bingVerification,
+              },
+            }
+          : {}),
       }
-    : undefined,
+    : siteConfig.bingVerification
+      ? {
+          other: {
+            "msvalidate.01": siteConfig.bingVerification,
+          },
+        }
+      : undefined,
 };
 
 export const viewport: Viewport = {
@@ -66,7 +84,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB">
+    <html lang={siteConfig.language}>
       <body>
         <div className="relative min-h-screen overflow-x-hidden">
           <script

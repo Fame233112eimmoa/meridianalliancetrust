@@ -15,14 +15,14 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-stone-200/70 bg-white/90 backdrop-blur">
       <div className="section-shell flex h-20 items-center justify-between gap-4">
-        <Link href="/" className="min-w-0">
+        <Link href="/" className="min-w-0" aria-label="Go to Meridian Alliance Trust UK home">
           <BrandLogo
             variant="horizontal"
             className="w-[11.5rem] max-w-full sm:w-[13rem] lg:w-[14.5rem]"
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
           {publicNav.map((item) => {
             const active = pathname === item.href;
 
@@ -62,16 +62,18 @@ export function Navbar() {
       {open ? (
         <div className="border-t border-stone-200 bg-white lg:hidden">
           <div className="section-shell flex flex-col gap-4 py-5">
-            {publicNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-stone-700"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <nav aria-label="Mobile primary" className="flex flex-col gap-4">
+              {publicNav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm font-medium text-stone-700"
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
             <div className="flex flex-col gap-3 pt-2">
               <Button href="/support" variant="secondary">
                 Support

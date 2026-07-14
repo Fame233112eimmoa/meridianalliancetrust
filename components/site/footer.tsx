@@ -15,7 +15,9 @@ export function Footer() {
       <div className="section-shell grid gap-8 py-10 lg:grid-cols-[1.4fr_1fr] lg:items-end">
         <div className="space-y-4">
           <div>
-            <BrandLogo variant="horizontal" className="w-[14rem] max-w-full sm:w-[16rem]" />
+            <Link href="/" aria-label="Go to Meridian Alliance Trust UK home">
+              <BrandLogo variant="horizontal" className="w-[14rem] max-w-full sm:w-[16rem]" />
+            </Link>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-600">
               Meridian Alliance Trust UK's website for service information, public support, and a
               protected dashboard login for approved users.
@@ -24,7 +26,10 @@ export function Footer() {
           <p className="text-sm text-stone-500">© 2026 Meridian Alliance Trust UK. Public website.</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:justify-items-end">
+        <nav
+          aria-label="Footer"
+          className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:justify-items-end"
+        >
           {footerLinks.map((link) => (
             <Link
               key={link.href}
@@ -34,7 +39,7 @@ export function Footer() {
               {link.label}
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </footer>
   );

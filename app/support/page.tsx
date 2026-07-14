@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { StructuredData } from "@/components/seo/structured-data";
 import { PublicShell } from "@/components/site/public-shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
-import { buildIndexableMetadata } from "@/lib/seo";
+import { buildIndexableMetadata, buildPageStructuredData } from "@/lib/seo";
 
 const supportBlocks = [
   {
@@ -45,28 +46,53 @@ export const metadata: Metadata = buildIndexableMetadata({
     "Explore support pathways for login, cards, transfers, and everyday client help at Meridian Alliance Trust UK.",
 });
 
+const structuredData = buildPageStructuredData({
+  path: "/support",
+  title: "Support",
+  description:
+    "Explore support pathways for login, cards, transfers, and everyday client help at Meridian Alliance Trust UK.",
+  pageType: "CollectionPage",
+  breadcrumbs: [
+    { label: "Home", path: "/" },
+    { label: "Support", path: "/support" },
+  ],
+});
+
 export default function SupportPage() {
   return (
     <PublicShell>
+      <StructuredData data={structuredData} id="support-structured-data" />
       <section className="section-shell py-10 sm:py-14 lg:py-20">
         <PageHeader
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Support", href: "/support" },
+          ]}
           eyebrow="Support"
           title="A calm, guided support experience"
           description="Explore support pathways for login, cards, payments, and everyday client help."
           actions={<Button href="/contact">Contact Us</Button>}
         />
 
-        <div className="grid gap-5 lg:grid-cols-3">
-          {supportBlocks.map((block) => (
-            <Card key={block.title} title={block.title} description={block.copy}>
-              <Button href={block.href} variant="secondary">
-                Get Help
-              </Button>
-            </Card>
-          ))}
-        </div>
+        <section aria-labelledby="support-pathways-heading">
+          <h2 id="support-pathways-heading" className="sr-only">
+            Support pathways
+          </h2>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {supportBlocks.map((block) => (
+              <Card key={block.title} title={block.title} description={block.copy}>
+                <Button href={block.href} variant="secondary">
+                  Get Help
+                </Button>
+              </Card>
+            ))}
+          </div>
+        </section>
 
-        <div className="mt-8">
+        <section className="mt-8" aria-labelledby="support-faq-heading">
+          <h2 id="support-faq-heading" className="sr-only">
+            Frequently asked questions
+          </h2>
           <Card title="Frequently Asked Questions" description="Quick answers for common banking and service questions.">
             <div className="space-y-4">
               {faqs.map((item) => (
@@ -77,7 +103,7 @@ export default function SupportPage() {
               ))}
             </div>
           </Card>
-        </div>
+        </section>
       </section>
     </PublicShell>
   );
