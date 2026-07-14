@@ -29,7 +29,7 @@ The project now keeps development output and production preview output in separa
 
 Set these environment variables in local development and on your hosting platform:
 
-- `NEXT_PUBLIC_SITE_URL=https://www.yourdomain.com`
+- `NEXT_PUBLIC_SITE_URL=https://meridianalliancetrust.com`
 - `GOOGLE_SITE_VERIFICATION=your-search-console-verification-token`
 - `PRIVATE_ACCESS_ACCOUNT_NAME=Approved Client Name`
 - `PRIVATE_ACCESS_CUSTOMER_NUMBER=MTB-1024`
@@ -46,13 +46,9 @@ configured. Any `PRIVATE_ACCESS_*` values you set on the host will override thos
 Before any real launch, replace the prototype defaults by setting the private-access environment
 variables on the host.
 
-If `NEXT_PUBLIC_SITE_URL` or `SITE_URL` is not set to your real public domain, the app now falls back to a safe non-indexing mode:
-
-- public pages emit `noindex`
-- `/robots.txt` blocks crawling
-- `/sitemap.xml` stays empty
-
-That prevents localhost or preview deployment URLs from being indexed by mistake.
+The public SEO configuration is now set to use `https://meridianalliancetrust.com` as the canonical
+site domain. Preview deployments still remain `noindex` so temporary Vercel URLs are not indexed by
+mistake.
 
 ## Hosting
 
@@ -61,7 +57,7 @@ Host this as a live Next.js app on a platform that supports server-side Next.js,
 1. Run `npm run build`
 2. Start the already-built production server with `npm start`
 3. Deploy the full app with the same environment variables configured on the host
-4. Make sure your final site loads at your real domain over HTTPS
+4. Make sure your final site loads at `https://meridianalliancetrust.com` over HTTPS
 
 If you upload only static files to a plain HTML host, the protected client area will not work correctly because the login and OTP checks now happen on the server.
 
@@ -76,7 +72,7 @@ Recommended setup:
 
 1. Add your site in Google Search Console
 2. Verify ownership
-3. Submit `https://www.yourdomain.com/sitemap.xml`
+3. Submit `https://meridianalliancetrust.com/sitemap.xml`
 
 If you use the HTML tag verification method, set `GOOGLE_SITE_VERIFICATION` before building.
 

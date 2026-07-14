@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 
-const LOCAL_FALLBACK_SITE_URL = "http://localhost:3000";
-
-function isExplicitlyConfigured(value?: string) {
-  return Boolean(value?.trim());
-}
+const CUSTOM_SITE_URL = "https://meridianalliancetrust.com";
 
 function normalizeSiteUrl(value: string) {
   const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
@@ -36,23 +32,18 @@ function isLocalLikeSiteUrl(value: string) {
   );
 }
 
-const explicitSiteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim() || "";
-const productionSiteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() || "";
-const previewSiteUrl = process.env.VERCEL_URL?.trim() || "";
+const configuredSiteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim() || CUSTOM_SITE_URL;
 const vercelEnvironment = process.env.VERCEL_ENV?.trim().toLowerCase() || "";
 const isPreviewDeployment =
   process.env.VERCEL === "1" && Boolean(vercelEnvironment) && vercelEnvironment !== "production";
-const preferredSiteUrl = explicitSiteUrl || productionSiteUrl;
-
-const rawSiteUrl = preferredSiteUrl || previewSiteUrl || LOCAL_FALLBACK_SITE_URL;
 
 export const siteConfig = {
   name: "Meridian Alliance Trust UK",
   legalName: "Meridian Alliance Trust UK",
   description:
     "Private banking website for Meridian Alliance Trust UK with account-opening guidance, client support, and a protected dashboard login.",
-  url: normalizeSiteUrl(rawSiteUrl),
+  url: normalizeSiteUrl(configuredSiteUrl),
   locale: "en_GB",
   language: "en-GB",
   logoPath: "/images/meridian-logo-monogram.jpg",
@@ -74,9 +65,8 @@ export const siteConfig = {
 };
 
 export const indexableRoutes = ["/", "/create-account", "/contact", "/support"] as const;
-export const hasConfiguredSiteUrl = isExplicitlyConfigured(explicitSiteUrl);
 export const hasPublicSiteUrl =
-  Boolean(preferredSiteUrl) && !isLocalLikeSiteUrl(siteConfig.url) && !isPreviewDeployment;
+  !isLocalLikeSiteUrl(siteConfig.url) && !isPreviewDeployment;
 
 export const indexRobots: NonNullable<Metadata["robots"]> = {
   index: true,
