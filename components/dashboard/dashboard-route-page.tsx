@@ -251,7 +251,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             items={[
               {
                 label: "Total Balance",
-                value: "£110,821.13",
+                value: "£5,232,030.00",
                 detail: "Checking and savings balances combined across your portfolio.",
               },
               {
