@@ -68,11 +68,11 @@ export function TransferReviewCard({
     };
   }, []);
 
-  const previewAmount = values["Amount"] || "$0.00";
+  const previewAmount = values["Amount"] || "£0.00";
   const recipientName =
     values["Beneficiary name"] ||
     values["To account"] ||
-    values["Account / IBAN"] ||
+    values["IBAN / Account"] ||
     values["Account number"] ||
     "Selected recipient";
   const fromAccount = values["From account"];

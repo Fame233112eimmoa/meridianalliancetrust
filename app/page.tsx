@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { PremiumCardShowcase } from "@/components/site/premium-card-showcase";
 import { PublicShell } from "@/components/site/public-shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,7 +12,7 @@ export const metadata: Metadata = buildIndexableMetadata({
 const featureCards = [
   {
     title: "Everyday Banking",
-    copy: "Explore checking-account, savings, and relationship-banking services presented with clarity and discretion.",
+    copy: "Explore current-account, savings, and relationship-banking services presented with clarity and discretion.",
   },
   {
     title: "Cards Support",
@@ -28,7 +27,22 @@ const featureCards = [
 const securityPoints = [
   "Careful review for onboarding and service requests",
   "Relationship-led support with clear communication paths",
-  "Dedicated help for payment cards and account inquiries",
+  "Dedicated help for payment cards and account enquiries",
+];
+
+const heroHighlights = [
+  {
+    label: "Current & Savings Services",
+    value: "Support for day-to-day banking needs and longer-term reserves",
+  },
+  {
+    label: "Payments & Transfers",
+    value: "Guidance for domestic and international payment enquiries",
+  },
+  {
+    label: "Private Support",
+    value: "Relationship-led guidance, card support, and clear service touchpoints",
+  },
 ];
 
 export default function HomePage() {
@@ -38,52 +52,59 @@ export default function HomePage() {
         <div className="overflow-hidden rounded-[2.5rem] border border-stone-200/80 bg-white shadow-soft">
           <div className="relative">
             <div
-              className="absolute inset-0 bg-cover bg-[position:78%_center]"
+              className="absolute inset-0 bg-cover bg-[position:72%_center]"
               style={{
                 backgroundImage:
-                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.95) 27%, rgba(252,252,251,0.74) 49%, rgba(15,23,42,0.10) 100%), url('/images/meridian-home-hero-usa.png')",
+                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.92) 30%, rgba(252,252,251,0.58) 54%, rgba(15,23,42,0.14) 100%), url('/images/meridian-home-hero.jpg')",
               }}
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.4),_transparent_45%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.16)_100%)]" />
-            <div className="relative grid min-h-[34rem] gap-10 px-6 py-8 sm:px-8 sm:py-9 lg:min-h-[40rem] lg:grid-cols-[1.02fr_0.98fr] lg:px-12 lg:py-12">
-              <div className="flex flex-col justify-center gap-10">
-                <div className="max-w-3xl space-y-6">
+            <div className="relative grid min-h-[32rem] gap-8 px-6 py-7 sm:px-8 sm:py-8 lg:min-h-[38rem] lg:grid-cols-[1.06fr_0.94fr] lg:px-12 lg:py-12">
+              <div className="flex flex-col justify-between gap-8">
+                <div className="max-w-3xl space-y-5">
                   <p className="eyebrow">Premium Personal Banking</p>
                   <h1 className="max-w-3xl text-5xl leading-[1.02] text-stone-950 sm:text-6xl">
-                    Thoughtful private banking support with an American standard of trust, clarity, and calm.
+                    Thoughtful private banking support with a distinctly British sense of trust and calm.
                   </h1>
-                  <p className="max-w-xl text-base leading-8 text-stone-600 sm:text-lg">
-                    Meridian Alliance Trust USA presents card servicing support, international
+                  <p className="max-w-2xl text-base leading-8 text-stone-600 sm:text-lg">
+                    Meridian Alliance Trust UK presents card servicing support, international
                     payment guidance, secure dashboard login, and responsive client contact
                     pathways in a refined website designed for clarity and discretion.
                   </p>
                 </div>
 
-                <div className="max-w-xl space-y-4">
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <Button href="/login" size="lg">
-                      Login
-                    </Button>
-                    <Button href="/support" size="lg" variant="secondary">
-                      Support
-                    </Button>
-                    <Button href="/contact" size="lg" variant="ghost">
-                      Contact
-                    </Button>
-                  </div>
-                  <p className="text-sm leading-7 text-stone-500">
-                    Protected dashboard access, responsive client service, and clear support
-                    pathways for approved clients and new inquiries.
-                  </p>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Button href="/login" size="lg">
+                    Login
+                  </Button>
+                  <Button href="/support" size="lg" variant="secondary">
+                    Support
+                  </Button>
+                  <Button href="/contact" size="lg" variant="ghost">
+                    Contact
+                  </Button>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-3">
+                  {heroHighlights.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[1.75rem] border border-white/80 bg-white/82 p-5 backdrop-blur-sm"
+                    >
+                      <p className="text-xs uppercase tracking-[0.24em] text-stone-500">
+                        {item.label}
+                      </p>
+                      <p className="mt-3 text-base leading-7 text-stone-950">{item.value}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="flex items-end justify-end lg:items-center">
-                <div className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-white/84 p-6 shadow-soft backdrop-blur-sm sm:p-7">
+              <div className="flex items-end justify-end">
+                <div className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-white/86 p-6 shadow-soft backdrop-blur-sm sm:p-7">
                   <p className="eyebrow">Client Approach</p>
                   <h2 className="mt-4 text-3xl text-stone-950">
-                    New York heritage paired with a modern service standard.
+                    London heritage paired with a modern service standard.
                   </h2>
                   <p className="mt-4 text-sm leading-7 text-stone-600">
                     From secure dashboard access to cross-border payment support, the experience is
@@ -130,7 +151,11 @@ export default function HomePage() {
           </Card>
 
           <div className="panel overflow-hidden bg-[linear-gradient(135deg,#180607_0%,#401014_44%,#8B1E24_100%)] p-4 sm:p-5">
-            <PremiumCardShowcase />
+            <img
+              alt="Meridian Alliance Trust UK premium card"
+              className="w-full rounded-[1.75rem] object-cover"
+              src="/images/meridian-premium-card.png"
+            />
           </div>
         </div>
       </section>
@@ -140,7 +165,7 @@ export default function HomePage() {
           {featureCards.map((item) => (
             <Card key={item.title} title={item.title} description={item.copy}>
               <p className="text-sm leading-7 text-stone-600">
-                Meridian Alliance Trust USA keeps layouts spacious, readable, and consistent across
+                Meridian Alliance Trust UK keeps layouts spacious, readable, and consistent across
                 mobile and desktop use.
               </p>
             </Card>
@@ -153,7 +178,7 @@ export default function HomePage() {
           <div className="space-y-5">
             <p className="eyebrow">Security First</p>
             <h2 className="text-4xl text-stone-950 sm:text-5xl">
-              Discreet support for cards, onboarding, and sensitive inquiries.
+              Discreet support for cards, onboarding, and sensitive enquiries.
             </h2>
             <p className="max-w-xl text-base leading-8 text-stone-600">
               Every important action is framed with clear controls, soft visual hierarchy, and
@@ -219,7 +244,7 @@ export default function HomePage() {
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
             <div className="max-w-3xl">
               <p className="eyebrow text-white/60">Get Started</p>
-              <h2 className="mt-4 text-4xl sm:text-5xl">Step into Meridian Alliance Trust USA</h2>
+              <h2 className="mt-4 text-4xl sm:text-5xl">Step into Meridian Alliance Trust UK</h2>
               <p className="mt-4 text-base leading-8 text-white/75">
                 Reach support quickly, review service information, and use the protected login to
                 enter the private dashboard.

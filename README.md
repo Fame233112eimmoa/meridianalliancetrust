@@ -1,4 +1,4 @@
-# Meridian Alliance Trust USA
+# Meridian Alliance Trust UK
 
 This project is a Next.js site for a public-facing marketing website plus a protected client-access area.
 
@@ -101,7 +101,7 @@ The protected sign-in and dashboard routes are intentionally excluded from the p
 - `/dashboard`
 - `/dashboard/*`
 
-This hosted site is now positioned as a public-facing marketing and inquiry website, not a live online banking portal.
+This hosted site is now positioned as a public-facing marketing and enquiry website, not a live online banking portal.
 
 ## Private Client Access
 

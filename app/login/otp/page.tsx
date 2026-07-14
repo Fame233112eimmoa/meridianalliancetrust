@@ -17,7 +17,7 @@ import { buildPrivateMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPrivateMetadata({
   path: "/login/otp",
   title: "OTP Verification",
-  description: "OTP verification for the Meridian Alliance Trust USA dashboard login.",
+  description: "OTP verification for the Meridian Alliance Trust UK dashboard login.",
 });
 
 type LoginOtpPageProps = {

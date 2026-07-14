@@ -17,11 +17,11 @@ export function Footer() {
           <div>
             <BrandLogo variant="horizontal" className="w-[14rem] max-w-full sm:w-[16rem]" />
             <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-600">
-              Meridian Alliance Trust USA's website for service information, public support, and a
+              Meridian Alliance Trust UK's website for service information, public support, and a
               protected dashboard login for approved users.
             </p>
           </div>
-          <p className="text-sm text-stone-500">© 2026 Meridian Alliance Trust USA. Public website.</p>
+          <p className="text-sm text-stone-500">© 2026 Meridian Alliance Trust UK. Public website.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:justify-items-end">

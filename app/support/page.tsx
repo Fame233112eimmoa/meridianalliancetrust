@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     question: "Can I request help for card-related questions here?",
-    answer: "Yes. Use the contact page for card servicing inquiries, replacement questions, and general client assistance.",
+    answer: "Yes. Use the contact page for card servicing enquiries, replacement questions, and general client assistance.",
   },
   {
     question: "Where can I get help with transfers or account questions?",
@@ -42,7 +42,7 @@ export const metadata: Metadata = buildIndexableMetadata({
   path: "/support",
   title: "Support",
   description:
-    "Explore support pathways for login, cards, transfers, and everyday client help at Meridian Alliance Trust USA.",
+    "Explore support pathways for login, cards, transfers, and everyday client help at Meridian Alliance Trust UK.",
 });
 
 export default function SupportPage() {

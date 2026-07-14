@@ -10,7 +10,7 @@ export const metadata: Metadata = buildIndexableMetadata({
   path: "/contact",
   title: "Contact",
   description:
-    "Reach Meridian Alliance Trust USA for onboarding questions, account support, and general banking inquiries.",
+    "Reach Meridian Alliance Trust UK for onboarding questions, account support, and general banking enquiries.",
 });
 
 export default function ContactPage() {
@@ -19,8 +19,8 @@ export default function ContactPage() {
       <section className="section-shell py-10 sm:py-14 lg:py-20">
         <PageHeader
           eyebrow="Contact"
-          title="Connect with Meridian Alliance Trust USA"
-          description="Reach out for account support, relationship service, and general banking inquiries through a refined digital contact experience."
+          title="Connect with Meridian Alliance Trust UK"
+          description="Reach out for account support, relationship service, and general banking enquiries through a refined digital contact experience."
         />
 
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
@@ -31,13 +31,13 @@ export default function ContactPage() {
             <form className="grid gap-4 sm:grid-cols-2">
               <Input label="Full name" placeholder="Enter your name" />
               <Input label="Email address" placeholder="you@example.com" type="email" />
-              <Input label="Phone number" placeholder="+1 (212) 555-0198" type="tel" />
+              <Input label="Phone number" placeholder="+44 7700 900123" type="tel" />
               <Input label="Subject" placeholder="How can we help?" />
               <label className="block text-sm text-stone-700 sm:col-span-2">
                 <span className="font-medium text-stone-900">Message</span>
                 <textarea
                   className="input-field min-h-40 resize-none"
-                  placeholder="Write your inquiry here"
+                  placeholder="Write your enquiry here"
                 />
               </label>
               <div className="sm:col-span-2">
@@ -50,7 +50,7 @@ export default function ContactPage() {
             <div className="grid gap-5 text-sm leading-7 text-stone-600 sm:grid-cols-2">
               <div>
                 <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Hours</p>
-                <p className="mt-2 font-medium text-stone-950">Mon to Fri, 8:00 AM to 6:00 PM ET</p>
+                <p className="mt-2 font-medium text-stone-950">Mon to Fri, 8:00 to 18:00</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Response Target</p>
@@ -58,11 +58,11 @@ export default function ContactPage() {
               </div>
               <div>
                 <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Email</p>
-                <p className="mt-2 font-medium text-stone-950">clientservices@meridianalliancetrustusa.example</p>
+                <p className="mt-2 font-medium text-stone-950">clientservices@meridianalliancetrustuk.example</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Phone</p>
-                <p className="mt-2 font-medium text-stone-950">+1 (212) 555-0198</p>
+                <p className="mt-2 font-medium text-stone-950">+44 20 5555 0198</p>
               </div>
             </div>
           </Card>
