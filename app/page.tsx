@@ -31,21 +31,6 @@ const securityPoints = [
   "Dedicated help for payment cards and account inquiries",
 ];
 
-const heroHighlights = [
-  {
-    label: "Checking & Savings Services",
-    value: "Support for day-to-day banking needs and longer-term reserves",
-  },
-  {
-    label: "Payments & Transfers",
-    value: "Guidance for domestic and international payment inquiries",
-  },
-  {
-    label: "Private Support",
-    value: "Relationship-led guidance, card support, and clear service touchpoints",
-  },
-];
-
 export default function HomePage() {
   return (
     <PublicShell>
@@ -53,56 +38,49 @@ export default function HomePage() {
         <div className="overflow-hidden rounded-[2.5rem] border border-stone-200/80 bg-white shadow-soft">
           <div className="relative">
             <div
-              className="absolute inset-0 bg-cover bg-[position:72%_center]"
+              className="absolute inset-0 bg-cover bg-[position:78%_center]"
               style={{
                 backgroundImage:
-                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.92) 30%, rgba(252,252,251,0.58) 54%, rgba(15,23,42,0.14) 100%), url('/images/meridian-home-hero-usa.png')",
+                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.95) 27%, rgba(252,252,251,0.74) 49%, rgba(15,23,42,0.10) 100%), url('/images/meridian-home-hero-usa.png')",
               }}
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.4),_transparent_45%)]" />
-            <div className="relative grid min-h-[32rem] gap-8 px-6 py-7 sm:px-8 sm:py-8 lg:min-h-[38rem] lg:grid-cols-[1.06fr_0.94fr] lg:px-12 lg:py-12">
-              <div className="flex flex-col justify-between gap-8">
-                <div className="max-w-3xl space-y-5">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0.16)_100%)]" />
+            <div className="relative grid min-h-[34rem] gap-10 px-6 py-8 sm:px-8 sm:py-9 lg:min-h-[40rem] lg:grid-cols-[1.02fr_0.98fr] lg:px-12 lg:py-12">
+              <div className="flex flex-col justify-center gap-10">
+                <div className="max-w-3xl space-y-6">
                   <p className="eyebrow">Premium Personal Banking</p>
                   <h1 className="max-w-3xl text-5xl leading-[1.02] text-stone-950 sm:text-6xl">
                     Thoughtful private banking support with an American standard of trust, clarity, and calm.
                   </h1>
-                  <p className="max-w-2xl text-base leading-8 text-stone-600 sm:text-lg">
+                  <p className="max-w-xl text-base leading-8 text-stone-600 sm:text-lg">
                     Meridian Alliance Trust USA presents card servicing support, international
                     payment guidance, secure dashboard login, and responsive client contact
                     pathways in a refined website designed for clarity and discretion.
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button href="/login" size="lg">
-                    Login
-                  </Button>
-                  <Button href="/support" size="lg" variant="secondary">
-                    Support
-                  </Button>
-                  <Button href="/contact" size="lg" variant="ghost">
-                    Contact
-                  </Button>
-                </div>
-
-                <div className="grid gap-4 md:grid-cols-3">
-                  {heroHighlights.map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-[1.75rem] border border-white/80 bg-white/82 p-5 backdrop-blur-sm"
-                    >
-                      <p className="text-xs uppercase tracking-[0.24em] text-stone-500">
-                        {item.label}
-                      </p>
-                      <p className="mt-3 text-base leading-7 text-stone-950">{item.value}</p>
-                    </div>
-                  ))}
+                <div className="max-w-xl space-y-4">
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <Button href="/login" size="lg">
+                      Login
+                    </Button>
+                    <Button href="/support" size="lg" variant="secondary">
+                      Support
+                    </Button>
+                    <Button href="/contact" size="lg" variant="ghost">
+                      Contact
+                    </Button>
+                  </div>
+                  <p className="text-sm leading-7 text-stone-500">
+                    Protected dashboard access, responsive client service, and clear support
+                    pathways for approved clients and new inquiries.
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-end justify-end">
-                <div className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-white/86 p-6 shadow-soft backdrop-blur-sm sm:p-7">
+              <div className="flex items-end justify-end lg:items-center">
+                <div className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-white/84 p-6 shadow-soft backdrop-blur-sm sm:p-7">
                   <p className="eyebrow">Client Approach</p>
                   <h2 className="mt-4 text-3xl text-stone-950">
                     New York heritage paired with a modern service standard.
