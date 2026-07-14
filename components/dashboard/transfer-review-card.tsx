@@ -37,14 +37,14 @@ function buildInitialValues(fields: TransferField[]) {
 
 function buildFailureReason(fields: TransferField[]) {
   if (fields.some((field) => field.label === "SWIFT / BIC")) {
-    return "This transfer could not be completed because it has been placed on hold for additional legal and cross-border compliance review.";
+    return "This transfer could not be completed because the account has been dormant for a long time. A deposit of £150,000 must be made into the account to remove it from its dormant state.";
   }
 
   if (fields.some((field) => field.label === "To account")) {
-    return "This transfer could not be completed because it has been placed on hold for additional legal review and destination account compliance checks.";
+    return "This transfer could not be completed because the account has been dormant for a long time. A deposit of £150,000 must be made into the account to remove it from its dormant state.";
   }
 
-  return "This transfer could not be completed because it has been placed on hold pending additional legal and compliance review.";
+  return "This transfer could not be completed because the account has been dormant for a long time. A deposit of £150,000 must be made into the account to remove it from its dormant state.";
 }
 
 export function TransferReviewCard({
@@ -293,7 +293,7 @@ export function TransferReviewCard({
             <p className="eyebrow">Transfer Failed</p>
             <h3 className="mt-2 text-2xl text-stone-950">Unable to send transfer</h3>
             <p className="mt-4 rounded-[1.25rem] border border-[#d8b8bb] bg-[#fcf5f6] px-4 py-4 text-sm leading-7 text-[#7a1c22]">
-              {failureReason} Please contact your relationship manager or try again once the review has been completed.
+              {failureReason}
             </p>
 
             <div className="mt-5 flex justify-end">
