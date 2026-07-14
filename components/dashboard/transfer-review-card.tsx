@@ -19,14 +19,8 @@ export type TransferField = {
 
 export type TransferSection = {
   title: string;
-  description: string;
+  description?: string;
   fields: TransferField[];
-};
-
-type TransferContextItem = {
-  label: string;
-  value: string;
-  detail: string;
 };
 
 type TransferReviewCardProps = {
@@ -34,8 +28,6 @@ type TransferReviewCardProps = {
   description: string;
   sections: TransferSection[];
   submitLabel: string;
-  contextItems?: TransferContextItem[];
-  checklist?: string[];
 };
 
 type SendState = "idle" | "failed";
@@ -63,8 +55,6 @@ export function TransferReviewCard({
   description,
   sections,
   submitLabel,
-  contextItems = [],
-  checklist = [],
 }: TransferReviewCardProps) {
   const [values, setValues] = useState<Record<string, string>>(() => buildInitialValues(sections));
   const [reviewError, setReviewError] = useState("");
@@ -153,7 +143,7 @@ export function TransferReviewCard({
   return (
     <>
       <Card description={description} title={title}>
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_18rem]">
+        <div className="space-y-5">
           <form
             className="space-y-5"
             onSubmit={(event) => {
@@ -162,13 +152,18 @@ export function TransferReviewCard({
             }}
           >
             {sections.map((section) => (
-              <section key={section.title} className="surface-muted p-5 sm:p-6">
-                <div className="border-b border-[#ead8da] pb-4">
+              <section
+                key={section.title}
+                className="rounded-[1.6rem] border border-stone-200/80 bg-stone-50 p-5 sm:p-6"
+              >
+                <div className="pb-3">
                   <p className="eyebrow">{section.title}</p>
-                  <p className="mt-2 text-sm leading-7 text-stone-600">{section.description}</p>
+                  {section.description ? (
+                    <p className="mt-2 text-sm leading-7 text-stone-600">{section.description}</p>
+                  ) : null}
                 </div>
 
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="mt-3 grid gap-4 sm:grid-cols-2">
                   {section.fields.map((field) => {
                     const wrapperClassName = field.fullWidth ? "sm:col-span-2" : "";
                     const optional = field.required === false;
@@ -274,48 +269,15 @@ export function TransferReviewCard({
               </p>
             ) : null}
 
-            <div className="flex flex-col gap-3 rounded-[1.5rem] border border-stone-200/80 bg-stone-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 rounded-[1.5rem] border border-stone-200/80 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm leading-7 text-stone-600">
-                Review completes a final check on beneficiary details, payment purpose, and available funds before release.
+                Review the instruction before final submission.
               </p>
               <Button size="lg" type="submit">
                 {submitLabel}
               </Button>
             </div>
           </form>
-
-          <aside className="space-y-4">
-            {contextItems.length ? (
-              <div className="surface-muted p-5">
-                <p className="eyebrow">Transfer Controls</p>
-                <div className="mt-4 space-y-4">
-                  {contextItems.map((item) => (
-                    <div key={item.label} className="rounded-[1.2rem] bg-white/80 px-4 py-4">
-                      <p className="text-[11px] uppercase tracking-[0.22em] text-stone-400">
-                        {item.label}
-                      </p>
-                      <p className="mt-2 text-base font-medium text-stone-950">{item.value}</p>
-                      <p className="mt-1 text-sm leading-6 text-stone-600">{item.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-
-            {checklist.length ? (
-              <div className="surface-muted p-5">
-                <p className="eyebrow">Before You Send</p>
-                <div className="mt-4 space-y-3">
-                  {checklist.map((item) => (
-                    <div key={item} className="flex gap-3 rounded-[1.2rem] bg-white/80 px-4 py-4">
-                      <span className="mt-1 h-2.5 w-2.5 rounded-full bg-accent" />
-                      <p className="text-sm leading-7 text-stone-700">{item}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </aside>
         </div>
       </Card>
 
