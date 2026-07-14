@@ -115,7 +115,7 @@ const siteUrl =
 const googleVerification =
   getEnvValue("GOOGLE_SITE_VERIFICATION", envFiles) ||
   getEnvValue("NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION", envFiles);
-const privateAccessEmail = getEnvValue("PRIVATE_ACCESS_EMAIL", envFiles);
+const privateAccessCustomerNumber = getEnvValue("PRIVATE_ACCESS_CUSTOMER_NUMBER", envFiles);
 const privateAccessPassword = getEnvValue("PRIVATE_ACCESS_PASSWORD", envFiles);
 const privateAccessOtp = getEnvValue("PRIVATE_ACCESS_OTP", envFiles);
 const privateAccessSessionSecret = getEnvValue("PRIVATE_ACCESS_SESSION_SECRET", envFiles);
@@ -148,10 +148,10 @@ if (googleVerification || hasGoogleVerificationFile()) {
   );
 }
 
-if (privateAccessEmail) {
-  passes.push("Protected access email is configured.");
+if (privateAccessCustomerNumber) {
+  passes.push("Protected access customer number is configured.");
 } else {
-  findings.push("Set PRIVATE_ACCESS_EMAIL for the protected login flow.");
+  findings.push("Set PRIVATE_ACCESS_CUSTOMER_NUMBER for the protected login flow.");
 }
 
 if (privateAccessPassword) {

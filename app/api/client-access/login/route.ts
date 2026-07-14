@@ -3,7 +3,7 @@ import { privateAccessConfig } from "@/lib/private-access";
 import {
   clearPrivateAccess,
   hasPrivateAccessConfiguration,
-  isApprovedEmail,
+  isApprovedCustomerNumber,
   isApprovedPassword,
   setPendingAccess,
 } from "@/lib/private-access.server";
@@ -21,10 +21,10 @@ export async function POST(request: NextRequest) {
   }
 
   const formData = await request.formData();
-  const email = String(formData.get("email") || "");
+  const customerNumber = String(formData.get("customerNumber") || "");
   const password = String(formData.get("password") || "");
 
-  if (!isApprovedEmail(email) || !isApprovedPassword(password)) {
+  if (!isApprovedCustomerNumber(customerNumber) || !isApprovedPassword(password)) {
     const response = NextResponse.redirect(
       buildRedirectUrl(request, `${privateAccessConfig.loginPath}?error=credentials`),
       303,

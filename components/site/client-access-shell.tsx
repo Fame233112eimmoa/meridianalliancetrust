@@ -28,8 +28,8 @@ export function ClientAccessShell({
               a signed server session.
             </div>
             <div className="rounded-[1.5rem] border border-white/10 bg-white/10 px-5 py-4 text-sm leading-7 text-white/78">
-              Update the configured email, password, or OTP later from your environment settings
-              and redeploy whenever you need to rotate access.
+              Update the configured customer number, password, or OTP later from your environment
+              settings and redeploy whenever you need to rotate access.
             </div>
           </div>
         </section>

@@ -8,7 +8,7 @@ import { buildIndexableMetadata } from "@/lib/seo";
 const supportBlocks = [
   {
     title: "Login Help",
-    copy: "Go to the secure login page to begin the email, password, and OTP flow for dashboard access.",
+    copy: "Go to the secure login page to begin the customer number, password, and OTP flow for dashboard access.",
     href: "/login",
   },
   {
@@ -26,7 +26,7 @@ const supportBlocks = [
 const faqs = [
   {
     question: "How do I sign in to the dashboard?",
-    answer: "Use the login page, enter the approved email and password, then complete OTP verification to reach the dashboard.",
+    answer: "Use the login page, enter the approved customer number and password, then complete OTP verification to reach the dashboard.",
   },
   {
     question: "Can I request help for card-related questions here?",

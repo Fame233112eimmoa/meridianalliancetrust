@@ -5,14 +5,14 @@ import { buildRedirectUrl } from "@/lib/request-url";
 
 const encoder = new TextEncoder();
 const requiredPrivateAccessEnvNames = [
-  "PRIVATE_ACCESS_EMAIL",
+  "PRIVATE_ACCESS_CUSTOMER_NUMBER",
   "PRIVATE_ACCESS_PASSWORD",
   "PRIVATE_ACCESS_OTP",
   "PRIVATE_ACCESS_SESSION_SECRET",
 ] as const;
 
-function normalizeEmail(value: string) {
-  return value.trim().toLowerCase();
+function normalizeCustomerNumber(value: string) {
+  return value.trim().toUpperCase();
 }
 
 function getRequiredPrivateAccessEnv(name: string) {
@@ -51,8 +51,8 @@ async function createSignature(key: string, value: string) {
   return toHex(signature);
 }
 
-function getApprovedEmail() {
-  return normalizeEmail(getRequiredPrivateAccessEnv("PRIVATE_ACCESS_EMAIL"));
+function getApprovedCustomerNumber() {
+  return normalizeCustomerNumber(getRequiredPrivateAccessEnv("PRIVATE_ACCESS_CUSTOMER_NUMBER"));
 }
 
 function getApprovedPassword() {
@@ -81,14 +81,14 @@ async function hasValidCookie(
     return false;
   }
 
-  const email = normalizeEmail(value.slice(0, separatorIndex));
+  const customerNumber = normalizeCustomerNumber(value.slice(0, separatorIndex));
   const signature = value.slice(separatorIndex + 1);
   const expectedSignature = await createSignature(
     await getSessionSecret(),
-    `${scope}:${email}`,
+    `${scope}:${customerNumber}`,
   );
 
-  return email === getApprovedEmail() && signature === expectedSignature;
+  return customerNumber === getApprovedCustomerNumber() && signature === expectedSignature;
 }
 
 function clearPrivateCookies(response: NextResponse) {

@@ -14,13 +14,13 @@ export function AuthPage({ error }: AuthPageProps) {
         <h1 className="mt-3 text-3xl text-stone-950">Sign In</h1>
         <form action="/api/login" className="mt-8 space-y-4" method="post">
           <Input
-            autoComplete="email"
+            autoComplete="username"
             defaultValue=""
-            label="Email address"
-            name="email"
-            placeholder="name@example.com"
+            label="Customer number"
+            name="customerNumber"
+            placeholder="MTB-1024"
             required
-            type="email"
+            type="text"
           />
           <Input
             autoComplete="current-password"

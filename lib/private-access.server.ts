@@ -5,14 +5,14 @@ import type { NextRequest, NextResponse } from "next/server";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
 
 const requiredPrivateAccessEnvNames = [
-  "PRIVATE_ACCESS_EMAIL",
+  "PRIVATE_ACCESS_CUSTOMER_NUMBER",
   "PRIVATE_ACCESS_PASSWORD",
   "PRIVATE_ACCESS_OTP",
   "PRIVATE_ACCESS_SESSION_SECRET",
 ] as const;
 
-function normalizeEmail(value: string) {
-  return value.trim().toLowerCase();
+function normalizeCustomerNumber(value: string) {
+  return value.trim().toUpperCase();
 }
 
 function getRequiredPrivateAccessEnv(name: string) {
@@ -36,8 +36,8 @@ function safeEqual(left: string, right: string) {
   return timingSafeEqual(leftBuffer, rightBuffer);
 }
 
-function getApprovedEmail() {
-  return normalizeEmail(getRequiredPrivateAccessEnv("PRIVATE_ACCESS_EMAIL"));
+function getApprovedCustomerNumber() {
+  return normalizeCustomerNumber(getRequiredPrivateAccessEnv("PRIVATE_ACCESS_CUSTOMER_NUMBER"));
 }
 
 function getApprovedPassword() {
@@ -52,15 +52,15 @@ function getSessionSecret() {
   return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_SESSION_SECRET");
 }
 
-function buildSignature(scope: "pending" | "authenticated", email: string) {
+function buildSignature(scope: "pending" | "authenticated", customerNumber: string) {
   return createHmac("sha256", getSessionSecret())
-    .update(`${scope}:${email}`)
+    .update(`${scope}:${customerNumber}`)
     .digest("hex");
 }
 
 function buildCookieValue(scope: "pending" | "authenticated") {
-  const email = getApprovedEmail();
-  return `${email}.${buildSignature(scope, email)}`;
+  const customerNumber = getApprovedCustomerNumber();
+  return `${customerNumber}.${buildSignature(scope, customerNumber)}`;
 }
 
 function readCookieValue(scope: "pending" | "authenticated", value?: string) {
@@ -74,20 +74,20 @@ function readCookieValue(scope: "pending" | "authenticated", value?: string) {
     return null;
   }
 
-  const email = value.slice(0, separatorIndex);
+  const customerNumber = value.slice(0, separatorIndex);
   const signature = value.slice(separatorIndex + 1);
-  const normalizedEmail = normalizeEmail(email);
-  const expectedSignature = buildSignature(scope, normalizedEmail);
+  const normalizedCustomerNumber = normalizeCustomerNumber(customerNumber);
+  const expectedSignature = buildSignature(scope, normalizedCustomerNumber);
 
   if (!safeEqual(signature, expectedSignature)) {
     return null;
   }
 
-  if (!safeEqual(normalizedEmail, getApprovedEmail())) {
+  if (!safeEqual(normalizedCustomerNumber, getApprovedCustomerNumber())) {
     return null;
   }
 
-  return normalizedEmail;
+  return normalizedCustomerNumber;
 }
 
 function setCookie(
@@ -109,8 +109,11 @@ export function hasPrivateAccessConfiguration() {
   return requiredPrivateAccessEnvNames.every((name) => Boolean(process.env[name]?.trim()));
 }
 
-export function isApprovedEmail(email: string) {
-  return safeEqual(normalizeEmail(email), getApprovedEmail());
+export function isApprovedCustomerNumber(customerNumber: string) {
+  return safeEqual(
+    normalizeCustomerNumber(customerNumber),
+    getApprovedCustomerNumber(),
+  );
 }
 
 export function isApprovedPassword(password: string) {
@@ -169,13 +172,13 @@ export function clearPrivateAccess(response: NextResponse) {
   response.cookies.delete(privateAccessCookieNames.authenticated);
 }
 
-export function getApprovedPrivateAccessEmail() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_EMAIL");
+export function getApprovedPrivateAccessCustomerNumber() {
+  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_CUSTOMER_NUMBER");
 }
 
 export function getPrivateAccessPortalSummary() {
   return {
     accountName: privateAccessConfig.accountName,
-    approvedEmail: getApprovedPrivateAccessEmail(),
+    approvedCustomerNumber: getApprovedPrivateAccessCustomerNumber(),
   };
 }

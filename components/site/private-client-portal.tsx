@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 type PrivateClientPortalProps = {
   accountName: string;
-  approvedEmail: string;
+  approvedCustomerNumber: string;
 };
 
 export function PrivateClientPortal({
   accountName,
-  approvedEmail,
+  approvedCustomerNumber,
 }: PrivateClientPortalProps) {
   return (
     <main className="section-shell py-10 sm:py-14 lg:py-20">
@@ -16,8 +16,8 @@ export function PrivateClientPortal({
           <p className="eyebrow">Secure Dashboard</p>
           <h1 className="text-4xl text-stone-950 sm:text-5xl">Welcome back, {accountName}</h1>
           <p className="max-w-3xl text-base leading-7 text-stone-600">
-            This dashboard is restricted to the approved email, password, OTP, and signed server
-            session configured for this deployment.
+            This dashboard is restricted to the approved customer number, password, OTP, and
+            signed server session configured for this deployment.
           </p>
         </div>
         <form action="/api/logout" method="post">
@@ -29,10 +29,10 @@ export function PrivateClientPortal({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card
-          title="Approved Login Email"
-          description="The exact email currently allowed through the protected login flow."
+          title="Approved Customer Number"
+          description="The exact customer number currently allowed through the protected login flow."
         >
-          <p className="text-base font-medium text-stone-950">{approvedEmail}</p>
+          <p className="text-base font-medium text-stone-950">{approvedCustomerNumber}</p>
         </Card>
 
         <Card

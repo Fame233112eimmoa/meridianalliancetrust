@@ -11,7 +11,7 @@ export const privateAccessCookieNames = {
 } as const;
 
 const privateAccessErrors = {
-  credentials: "The email or password entered is not approved for this login.",
+  credentials: "The customer number or password entered is not approved for this login.",
   otp: "The OTP entered is not approved for this login.",
   unavailable: "Private access is temporarily unavailable because the required login settings are not configured.",
 } as const;

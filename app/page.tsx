@@ -212,7 +212,7 @@ export default function HomePage() {
 
           <Card
             title="Secure login"
-            description="Approved users can sign in with email, password, and OTP verification before reaching the dashboard."
+            description="Approved users can sign in with a customer number, password, and OTP verification before reaching the dashboard."
           >
             <div className="grid gap-3 text-sm leading-7 text-stone-600">
               <p>

@@ -32,7 +32,7 @@ Set these environment variables in local development and on your hosting platfor
 - `NEXT_PUBLIC_SITE_URL=https://www.yourdomain.com`
 - `GOOGLE_SITE_VERIFICATION=your-search-console-verification-token`
 - `PRIVATE_ACCESS_ACCOUNT_NAME=Approved Client Name`
-- `PRIVATE_ACCESS_EMAIL=approved-client@example.com`
+- `PRIVATE_ACCESS_CUSTOMER_NUMBER=MTB-1024`
 - `PRIVATE_ACCESS_PASSWORD=change-this-password`
 - `PRIVATE_ACCESS_OTP=123456`
 - `PRIVATE_ACCESS_SESSION_SECRET=replace-with-a-long-random-secret`
@@ -110,7 +110,7 @@ The site also includes a restricted client flow at `/client-access`.
 The approved values are configured from environment variables rather than front-end code:
 
 - `PRIVATE_ACCESS_ACCOUNT_NAME`
-- `PRIVATE_ACCESS_EMAIL`
+- `PRIVATE_ACCESS_CUSTOMER_NUMBER`
 - `PRIVATE_ACCESS_PASSWORD`
 - `PRIVATE_ACCESS_OTP`
 - `PRIVATE_ACCESS_SESSION_SECRET`
