@@ -29,4 +29,29 @@ Total 25 (delta 13), reused 0 (delta 0), pack-reused 0
 remote: Resolving deltas:   0% (0/13)[Kremote: Resolving deltas:   7% (1/13)[Kremote: Resolving deltas:  15% (2/13)[Kremote: Resolving deltas:  23% (3/13)[Kremote: Resolving deltas:  30% (4/13)[Kremote: Resolving deltas:  38% (5/13)[Kremote: Resolving deltas:  46% (6/13)[Kremote: Resolving deltas:  53% (7/13)[Kremote: Resolving deltas:  61% (8/13)[Kremote: Resolving deltas:  69% (9/13)[Kremote: Resolving deltas:  76% (10/13)[Kremote: Resolving deltas:  84% (11/13)[Kremote: Resolving deltas:  92% (12/13)[Kremote: Resolving deltas: 100% (13/13)[Kremote: Resolving deltas: 100% (13/13), completed with 13 local objects.[K
 To https://github.com/Fame233112eimmoa/meridianalliancetrust.git
    3128201..dc1798a  main -> main
-[1m[7m%[27m[1m[0m                                                                          [0m[27m[24m[Jkelvin@kelvins-MacBook-Pro meridianalliancetrustuk % [K[?2004h[7msitemap-index.xml was[7m [7mnot added because this site only has a handful of indexable URLs, so a si[7mn[7mgle sitemap.xml is the correct setup.[27m[K[A[A[15C[27ms[27mi[27mt[27me[27mm[27ma[27mp[27m-[27mi[27mn[27md[27me[27mx[27m.[27mx[27mm[27ml[27m [27mw[27ma[27ms [27mn[27mo[27mt[27m [27ma[27md[27md[27me[27md[27m [27mb[27me[27mc[27ma[27mu[27ms[27me[27m [27mt[27mh[27mi[27ms[27m [27ms[27mi[27mt[27me[27m [27mo[27mn[27ml[27my[27m [27mh[27ma[27ms[27m [27ma[27m [27mh[27ma[27mn[27md[27mf[27mu[27ml[27m [27mo[27mf[27m [27mi[27mn[27md[27me[27mx[27ma[27mb[27ml[27me[27m [27mU[27mR[27mL[27ms[27m,[27m [27ms[27mo[27m [27ma[27m [27ms[27min[27mg[27ml[27me[27m [27ms[27mi[27mt[27me[27mm[27ma[27mp[27m.[27mx[27mm[27ml[27m [27mi[27ms[27m [27mt[27mh[27me[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m [27ms[27me[27mt[27mu[27mp[K                 
+[1m[7m%[27m[1m[0m                                                                          [0m[27m[24m[Jkelvin@kelvins-MacBook-Pro meridianalliancetrustuk % [K[?2004h[7msitemap-index.xml was[7m [7mnot added because this site only has a handful of indexable URLs, so a si[7mn[7mgle sitemap.xml is the correct setup.[27m[K[A[A[15C[27ms[27mi[27mt[27me[27mm[27ma[27mp[27m-[27mi[27mn[27md[27me[27mx[27m.[27mx[27mm[27ml[27m [27mw[27ma[27ms [27mn[27mo[27mt[27m [27ma[27md[27md[27me[27md[27m [27mb[27me[27mc[27ma[27mu[27ms[27me[27m [27mt[27mh[27mi[27ms[27m [27ms[27mi[27mt[27me[27m [27mo[27mn[27ml[27my[27m [27mh[27ma[27ms[27m [27ma[27m [27mh[27ma[27mn[27md[27mf[27mu[27ml[27m [27mo[27mf[27m [27mi[27mn[27md[27me[27mx[27ma[27mb[27ml[27me[27m [27mU[27mR[27mL[27ms[27m,[27m [27ms[27mo[27m [27ma[27m [27ms[27min[27mg[27ml[27me[27m [27ms[27mi[27mt[27me[27mm[27ma[27mp[27m.[27mx[27mm[27ml[27m [27mi[27ms[27m [27mt[27mh[27me[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m [27ms[27me[27mt[27mu[27mp[K                              n [K[A[73C[K[1B[K[A[73C                                                           [K[A[73C[K[1B[K[A[73C                 s  [7mgit add .[1B[27m[7mgit commit -m "Update website"[27m[K[1B[7mgit push origin main[27m[K[A[A[33C[27mg[27mi[27mt[27m [27ma[27md[27md[27m [27m.[1B[27mg[27mi[27mt[27m [27mc[27mo[27mm[27mm[27mi[27mt[27m [27m-[27mm[27m [27m"[27mU[27mp[27md[27ma[27mt[27me[27m [27mw[27me[27mb[27ms[27mi[27mt[27me[27m"[1B[27mg[27mi[27mt[27m [27mp[27mu[27ms[27mh[27m [27mo[27mr[27mi[27mg[27mi[27mn[27m [27mm[27ma[27mi[27mn[?2004l
+[main 551c1ad] Update website
+ Committer: kelvin <kelvin@kelvins-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 31 insertions(+)
+Enumerating objects: 5, done.
+Counting objects:  20% (1/5)Counting objects:  40% (2/5)Counting objects:  60% (3/5)Counting objects:  80% (4/5)Counting objects: 100% (5/5)Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects:  33% (1/3)Compressing objects:  66% (2/3)Compressing objects: 100% (3/3)Compressing objects: 100% (3/3), done.
+Writing objects:  33% (1/3)Writing objects:  66% (2/3)Writing objects: 100% (3/3)Writing objects: 100% (3/3), 1.92 KiB | 1.92 MiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas:   0% (0/1)[Kremote: Resolving deltas: 100% (1/1)[Kremote: Resolving deltas: 100% (1/1), completed with 1 local object.[K
+To https://github.com/Fame233112eimmoa/meridianalliancetrust.git
+   dc1798a..551c1ad  main -> main
+[1m[7m%[27m[1m[0m                                                                          [0m[27m[24m[Jkelvin@kelvins-MacBook-Pro meridianalliancetrustuk % [K[?2004h

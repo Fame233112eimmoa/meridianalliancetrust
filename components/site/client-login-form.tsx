@@ -12,7 +12,7 @@ export function ClientLoginForm({ error }: ClientLoginFormProps) {
       <p className="eyebrow">Login</p>
       <h2 className="mt-3 text-3xl text-stone-950">Enter your approved credentials</h2>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-600">
-        Sign in with the approved customer number and password before continuing to OTP verification.
+        Sign in with your ID and password before continuing to OTP verification.
       </p>
 
       <form
@@ -23,9 +23,9 @@ export function ClientLoginForm({ error }: ClientLoginFormProps) {
         <Input
           autoComplete="username"
           defaultValue=""
-          label="Approved customer number"
+          label="Please enter ID"
           name="customerNumber"
-          placeholder="MTB-1024"
+          placeholder="Please enter ID"
           required
           type="text"
         />
@@ -51,7 +51,7 @@ export function ClientLoginForm({ error }: ClientLoginFormProps) {
       </form>
 
       <p className="mt-4 text-xs leading-6 text-stone-500">
-        After your customer number and password are accepted, you will be sent to{" "}
+        After your ID and password are accepted, you will be sent to{" "}
         {privateAccessConfig.otpPath}
         {" "}to complete OTP verification before opening the dashboard.
       </p>

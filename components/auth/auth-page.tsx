@@ -16,9 +16,9 @@ export function AuthPage({ error }: AuthPageProps) {
           <Input
             autoComplete="username"
             defaultValue=""
-            label="Customer number"
+            label="Please enter ID"
             name="customerNumber"
-            placeholder="MTB-1024"
+            placeholder="Please enter ID"
             required
             type="text"
           />
