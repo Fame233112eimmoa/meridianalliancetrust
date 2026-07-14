@@ -1,32 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  getPrivateAccessCredentialValue,
+  hasPrivateAccessCredentialConfiguration,
+} from "@/lib/private-access-credentials";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
 import { buildRedirectUrl } from "@/lib/request-url";
 
 const encoder = new TextEncoder();
-const requiredPrivateAccessEnvNames = [
-  "PRIVATE_ACCESS_CUSTOMER_NUMBER",
-  "PRIVATE_ACCESS_PASSWORD",
-  "PRIVATE_ACCESS_OTP",
-  "PRIVATE_ACCESS_SESSION_SECRET",
-] as const;
 
 function normalizeCustomerNumber(value: string) {
   return value.trim().toUpperCase();
 }
 
-function getRequiredPrivateAccessEnv(name: string) {
-  const value = process.env[name]?.trim();
-
-  if (!value) {
-    throw new Error(`${name} must be configured for protected private access.`);
-  }
-
-  return value;
-}
-
 function hasPrivateAccessConfiguration() {
-  return requiredPrivateAccessEnvNames.every((name) => Boolean(process.env[name]?.trim()));
+  return hasPrivateAccessCredentialConfiguration();
 }
 
 function toHex(buffer: ArrayBuffer) {
@@ -52,19 +40,11 @@ async function createSignature(key: string, value: string) {
 }
 
 function getApprovedCustomerNumber() {
-  return normalizeCustomerNumber(getRequiredPrivateAccessEnv("PRIVATE_ACCESS_CUSTOMER_NUMBER"));
-}
-
-function getApprovedPassword() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_PASSWORD");
-}
-
-function getApprovedOtp() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_OTP");
+  return normalizeCustomerNumber(getPrivateAccessCredentialValue("customerNumber"));
 }
 
 async function getSessionSecret() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_SESSION_SECRET");
+  return getPrivateAccessCredentialValue("sessionSecret");
 }
 
 async function hasValidCookie(

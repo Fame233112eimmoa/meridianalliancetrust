@@ -39,9 +39,12 @@ Set these environment variables in local development and on your hosting platfor
 
 An example is included in `.env.example`.
 
-The protected private-access flow no longer falls back to built-in demo credentials. If the
-private-access environment variables are missing on the live host, the protected login flow
-will fail closed until they are configured.
+The protected private-access flow includes built-in prototype defaults so a GitHub-to-Vercel
+deployment can still open the login flow even before private-access environment variables are
+configured. Any `PRIVATE_ACCESS_*` values you set on the host will override those defaults.
+
+Before any real launch, replace the prototype defaults by setting the private-access environment
+variables on the host.
 
 If `NEXT_PUBLIC_SITE_URL` or `SITE_URL` is not set to your real public domain, the app now falls back to a safe non-indexing mode:
 
@@ -107,7 +110,7 @@ This hosted site is now positioned as a public-facing marketing and enquiry webs
 
 The site also includes a restricted client flow at `/client-access`.
 
-The approved values are configured from environment variables rather than front-end code:
+The approved values can be overridden from environment variables:
 
 - `PRIVATE_ACCESS_ACCOUNT_NAME`
 - `PRIVATE_ACCESS_CUSTOMER_NUMBER`
@@ -115,4 +118,5 @@ The approved values are configured from environment variables rather than front-
 - `PRIVATE_ACCESS_OTP`
 - `PRIVATE_ACCESS_SESSION_SECRET`
 
-Change those values and redeploy whenever you want to rotate access.
+If those variables are absent, the app falls back to the built-in prototype values for local and
+Vercel preview use. Change the variables and redeploy whenever you want to rotate access.

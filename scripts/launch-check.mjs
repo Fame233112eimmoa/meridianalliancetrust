@@ -149,27 +149,35 @@ if (googleVerification || hasGoogleVerificationFile()) {
 }
 
 if (privateAccessCustomerNumber) {
-  passes.push("Protected access customer number is configured.");
+  passes.push("Protected access customer number override is configured.");
 } else {
-  findings.push("Set PRIVATE_ACCESS_CUSTOMER_NUMBER for the protected login flow.");
+  warnings.push(
+    "PRIVATE_ACCESS_CUSTOMER_NUMBER is not set; the deployed app will use the built-in prototype customer number.",
+  );
 }
 
 if (privateAccessPassword) {
-  passes.push("Protected access password is configured.");
+  passes.push("Protected access password override is configured.");
 } else {
-  findings.push("Set PRIVATE_ACCESS_PASSWORD for the protected login flow.");
+  warnings.push(
+    "PRIVATE_ACCESS_PASSWORD is not set; the deployed app will use the built-in prototype password.",
+  );
 }
 
 if (privateAccessOtp) {
-  passes.push("Protected access OTP is configured.");
+  passes.push("Protected access OTP override is configured.");
 } else {
-  findings.push("Set PRIVATE_ACCESS_OTP for the protected login flow.");
+  warnings.push(
+    "PRIVATE_ACCESS_OTP is not set; the deployed app will use the built-in prototype OTP.",
+  );
 }
 
 if (privateAccessSessionSecret) {
-  passes.push("Protected access session secret is configured.");
+  passes.push("Protected access session secret override is configured.");
 } else {
-  findings.push("Set PRIVATE_ACCESS_SESSION_SECRET for signed private-access cookies.");
+  warnings.push(
+    "PRIVATE_ACCESS_SESSION_SECRET is not set; the deployed app will use the built-in prototype cookie secret.",
+  );
 }
 
 const requiredFiles = [

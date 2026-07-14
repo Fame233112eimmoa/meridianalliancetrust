@@ -2,27 +2,14 @@ import "server-only";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest, NextResponse } from "next/server";
+import {
+  getPrivateAccessCredentialValue,
+  hasPrivateAccessCredentialConfiguration,
+} from "@/lib/private-access-credentials";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
-
-const requiredPrivateAccessEnvNames = [
-  "PRIVATE_ACCESS_CUSTOMER_NUMBER",
-  "PRIVATE_ACCESS_PASSWORD",
-  "PRIVATE_ACCESS_OTP",
-  "PRIVATE_ACCESS_SESSION_SECRET",
-] as const;
 
 function normalizeCustomerNumber(value: string) {
   return value.trim().toUpperCase();
-}
-
-function getRequiredPrivateAccessEnv(name: string) {
-  const value = process.env[name]?.trim();
-
-  if (!value) {
-    throw new Error(`${name} must be configured for protected private access.`);
-  }
-
-  return value;
 }
 
 function safeEqual(left: string, right: string) {
@@ -37,19 +24,19 @@ function safeEqual(left: string, right: string) {
 }
 
 function getApprovedCustomerNumber() {
-  return normalizeCustomerNumber(getRequiredPrivateAccessEnv("PRIVATE_ACCESS_CUSTOMER_NUMBER"));
+  return normalizeCustomerNumber(getPrivateAccessCredentialValue("customerNumber"));
 }
 
 function getApprovedPassword() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_PASSWORD");
+  return getPrivateAccessCredentialValue("password");
 }
 
 function getApprovedOtp() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_OTP");
+  return getPrivateAccessCredentialValue("otp");
 }
 
 function getSessionSecret() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_SESSION_SECRET");
+  return getPrivateAccessCredentialValue("sessionSecret");
 }
 
 function buildSignature(scope: "pending" | "authenticated", customerNumber: string) {
@@ -106,7 +93,7 @@ function setCookie(
 }
 
 export function hasPrivateAccessConfiguration() {
-  return requiredPrivateAccessEnvNames.every((name) => Boolean(process.env[name]?.trim()));
+  return hasPrivateAccessCredentialConfiguration();
 }
 
 export function isApprovedCustomerNumber(customerNumber: string) {
@@ -173,7 +160,7 @@ export function clearPrivateAccess(response: NextResponse) {
 }
 
 export function getApprovedPrivateAccessCustomerNumber() {
-  return getRequiredPrivateAccessEnv("PRIVATE_ACCESS_CUSTOMER_NUMBER");
+  return getPrivateAccessCredentialValue("customerNumber");
 }
 
 export function getPrivateAccessPortalSummary() {
