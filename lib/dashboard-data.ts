@@ -43,7 +43,7 @@ export const dashboardPages: DashboardPage[] = [
     label: "Dashboard",
     href: "/dashboard",
     eyebrow: "Account Summary",
-    title: "Welcome back, Thayenne L. Dancini",
+    title: "Welcome back, Richard Bahcnam",
     description: "View balances, activity, and the next actions across your banking profile.",
     actions: [
       { label: "Transfer Funds", href: "/dashboard/payments/internal-transfer", variant: "secondary" },

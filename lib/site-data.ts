@@ -48,9 +48,9 @@ export type BankCard = {
 };
 
 export const customerProfile = {
-  firstName: "Thayenne",
-  lastName: "L. Dancini",
-  fullName: "Thayenne L. Dancini",
+  firstName: "Richard",
+  lastName: "Bahcnam",
+  fullName: "Richard Bahcnam",
   email: "thayenne.dancini@example.com",
   relationshipManager: "Sophie Bennett",
   mailingAddress: "18 Belgrave Square, London SW1X 8PP",
@@ -84,17 +84,6 @@ export const accounts: Account[] = [
 ];
 
 export const transactions: Transaction[] = [
-  {
-    id: "txn-000",
-    name: "Inheritance Settlement",
-    category: "Inheritance Receipt",
-    date: "30 Jun 2026",
-    amount: "+ £3,000,000.00",
-    type: "credit",
-    account: "Checking",
-    status: "on-hold",
-    note: "On hold pending estate verification and legal review",
-  },
   {
     id: "txn-001",
     name: "Salary Credit",

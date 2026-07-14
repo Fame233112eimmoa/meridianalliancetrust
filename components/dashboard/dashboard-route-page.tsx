@@ -17,7 +17,6 @@ import {
   customerProfile,
   loginActivities,
   notifications,
-  type Transaction,
   transactions,
   trustedDevices,
 } from "@/lib/site-data";
@@ -97,43 +96,6 @@ function StatGrid({ items }: { items: StatItem[] }) {
           <p className="mt-2 text-sm leading-6 text-stone-600">{item.detail}</p>
         </div>
       ))}
-    </div>
-  );
-}
-
-function LegalHoldNotice({ transaction }: { transaction: Transaction }) {
-  const heldAmount = transaction.amount.replace(/^\+\s*/, "");
-
-  return (
-    <div className="rounded-[1.9rem] border border-[#d7afb2] bg-[linear-gradient(135deg,rgba(139,30,36,0.05)_0%,rgba(252,247,247,0.98)_100%)] p-5 sm:p-6">
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-2xl">
-          <div className="flex flex-wrap gap-2">
-            <span className="rounded-full border border-[#d7afb2] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent-deep">
-              Legal Hold
-            </span>
-            <span className="rounded-full bg-white px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-stone-500">
-              Excluded From Available Balance
-            </span>
-          </div>
-
-          <h3 className="mt-4 text-2xl text-stone-950">Inheritance funds under review</h3>
-          <p className="mt-2 text-sm leading-7 text-stone-600">
-            This inheritance settlement remains separate from your cleared funds while
-            estate verification and legal review are being completed. It has not been
-            credited to your available account balance.
-          </p>
-        </div>
-
-        <div className="rounded-[1.5rem] border border-[#ead3d5] bg-white px-5 py-4 lg:min-w-[18rem]">
-          <p className="text-[11px] uppercase tracking-[0.24em] text-stone-400">Amount on hold</p>
-          <p className="mt-2 text-3xl text-accent-deep">{heldAmount}</p>
-          <p className="mt-3 text-sm text-stone-600">{transaction.note ?? "Pending legal review"}</p>
-          <p className="mt-2 text-xs uppercase tracking-[0.2em] text-stone-400">
-            Received {transaction.date}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -280,7 +242,6 @@ function ToggleList({
 export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
   const checkingTransactions = transactions.filter((item) => item.account === "Checking");
   const savingsTransactions = transactions.filter((item) => item.account === "Savings");
-  const holdTransaction = transactions.find((item) => item.status === "on-hold");
 
   switch (page.routePath) {
     case "":
@@ -300,8 +261,6 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
               },
             ]}
           />
-
-          {holdTransaction ? <LegalHoldNotice transaction={holdTransaction} /> : null}
 
           <div className="grid gap-6 xl:grid-cols-2">
             {accounts.map((account) => (
@@ -442,8 +401,8 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
               },
               {
                 label: "Pending Review",
-                value: "1",
-                detail: "Inheritance funds remain on hold pending legal review.",
+                value: "0",
+                detail: "There are no payment items awaiting review right now.",
               },
               {
                 label: "This Month Outgoing",
