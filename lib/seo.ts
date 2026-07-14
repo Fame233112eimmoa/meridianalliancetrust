@@ -52,7 +52,7 @@ export const siteConfig = {
   url: normalizeSiteUrl(rawSiteUrl),
   locale: "en_US",
   logoPath: "/images/meridian-logo-monogram.jpg",
-  ogImagePath: "/images/meridian-home-hero.jpg",
+  ogImagePath: "/images/meridian-home-hero-usa.png",
   googleVerification:
     process.env.GOOGLE_SITE_VERIFICATION?.trim() ||
     process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() ||

@@ -56,7 +56,7 @@ export default function HomePage() {
               className="absolute inset-0 bg-cover bg-[position:72%_center]"
               style={{
                 backgroundImage:
-                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.92) 30%, rgba(252,252,251,0.58) 54%, rgba(15,23,42,0.14) 100%), url('/images/meridian-home-hero.jpg')",
+                  "linear-gradient(90deg, rgba(252,252,251,0.98) 0%, rgba(252,252,251,0.92) 30%, rgba(252,252,251,0.58) 54%, rgba(15,23,42,0.14) 100%), url('/images/meridian-home-hero-usa.png')",
               }}
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.4),_transparent_45%)]" />
