@@ -18,7 +18,7 @@ export function ClientAccessShell({
     <main className="section-shell flex min-h-screen items-center py-10 sm:py-14">
       <div className="mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <section className="panel overflow-hidden bg-[linear-gradient(160deg,#230608_0%,#5f1419_48%,#8B1E24_100%)] p-8 text-white sm:p-10">
-          <BrandLogo variant="stacked" className="w-40 brightness-[1.9] contrast-[0.9]" />
+          <BrandLogo variant="stacked" tone="light" className="w-40" />
           <p className="mt-8 text-xs uppercase tracking-[0.28em] text-white/60">{eyebrow}</p>
           <h1 className="mt-4 max-w-xl text-4xl leading-tight sm:text-5xl">{title}</h1>
           <p className="mt-5 max-w-lg text-base leading-8 text-white/78">{description}</p>

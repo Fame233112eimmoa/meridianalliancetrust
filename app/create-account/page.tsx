@@ -7,21 +7,21 @@ import { buildIndexableMetadata } from "@/lib/seo";
 
 const preparationItems = [
   "Your preferred account type and intended banking needs",
-  "Primary contact details and country of residence",
+  "Primary contact details and state or country of residence",
   "Basic identity and address documentation for follow-up",
 ];
 
 const nextStepItems = [
-  "Share your enquiry with client services",
+  "Share your inquiry with client services",
   "Receive guidance on suitability and documentation",
-  "Continue with the relationship team if your enquiry is a fit",
+  "Continue with the relationship team if your inquiry is a fit",
 ];
 
 export const metadata: Metadata = buildIndexableMetadata({
   path: "/create-account",
   title: "Open an Account",
   description:
-    "Learn how to begin an account-opening enquiry with Meridian Alliance Trust UK and what to prepare before contacting client services.",
+    "Learn how to begin an account-opening inquiry with Meridian Alliance Trust USA and what to prepare before contacting client services.",
 });
 
 export default function CreateAccountPage() {
@@ -30,7 +30,7 @@ export default function CreateAccountPage() {
       <section className="section-shell py-10 sm:py-14 lg:py-20">
         <PageHeader
           eyebrow="Open an Account"
-          title="Start your account enquiry with confidence"
+          title="Start your account inquiry with confidence"
           description="We use a guided, relationship-led process rather than instant public signup. Speak with client services to discuss suitability, required documents, and the next steps."
           actions={<Button href="/contact">Speak With Client Services</Button>}
         />
@@ -38,11 +38,11 @@ export default function CreateAccountPage() {
         <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
           <Card
             title="How to begin"
-            description="A short conversation with our team is the best starting point for new enquiries."
+            description="A short conversation with our team is the best starting point for new inquiries."
           >
             <div className="space-y-4 text-sm leading-7 text-stone-600">
               <p>
-                Meridian Alliance Trust UK reviews account-opening enquiries through client
+                Meridian Alliance Trust USA reviews account-opening inquiries through client
                 services so expectations, documentation, and service needs can be discussed
                 clearly from the outset.
               </p>
@@ -81,7 +81,7 @@ export default function CreateAccountPage() {
 
             <Card
               title="Typical next step"
-              description="Client services can explain timing, documentation, and what happens after your initial enquiry."
+              description="Client services can explain timing, documentation, and what happens after your initial inquiry."
             >
               <ol className="space-y-3 text-sm leading-7 text-stone-600">
                 {nextStepItems.map((item, index) => (

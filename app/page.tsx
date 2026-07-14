@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PremiumCardShowcase } from "@/components/site/premium-card-showcase";
 import { PublicShell } from "@/components/site/public-shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,7 +13,7 @@ export const metadata: Metadata = buildIndexableMetadata({
 const featureCards = [
   {
     title: "Everyday Banking",
-    copy: "Explore current-account, savings, and relationship-banking services presented with clarity and discretion.",
+    copy: "Explore checking-account, savings, and relationship-banking services presented with clarity and discretion.",
   },
   {
     title: "Cards Support",
@@ -27,17 +28,17 @@ const featureCards = [
 const securityPoints = [
   "Careful review for onboarding and service requests",
   "Relationship-led support with clear communication paths",
-  "Dedicated help for payment cards and account enquiries",
+  "Dedicated help for payment cards and account inquiries",
 ];
 
 const heroHighlights = [
   {
-    label: "Current & Savings Services",
+    label: "Checking & Savings Services",
     value: "Support for day-to-day banking needs and longer-term reserves",
   },
   {
     label: "Payments & Transfers",
-    value: "Guidance for domestic and international payment enquiries",
+    value: "Guidance for domestic and international payment inquiries",
   },
   {
     label: "Private Support",
@@ -64,10 +65,10 @@ export default function HomePage() {
                 <div className="max-w-3xl space-y-5">
                   <p className="eyebrow">Premium Personal Banking</p>
                   <h1 className="max-w-3xl text-5xl leading-[1.02] text-stone-950 sm:text-6xl">
-                    Thoughtful private banking support with a distinctly British sense of trust and calm.
+                    Thoughtful private banking support with an American standard of trust, clarity, and calm.
                   </h1>
                   <p className="max-w-2xl text-base leading-8 text-stone-600 sm:text-lg">
-                    Meridian Alliance Trust UK presents card servicing support, international
+                    Meridian Alliance Trust USA presents card servicing support, international
                     payment guidance, secure dashboard login, and responsive client contact
                     pathways in a refined website designed for clarity and discretion.
                   </p>
@@ -104,7 +105,7 @@ export default function HomePage() {
                 <div className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-white/86 p-6 shadow-soft backdrop-blur-sm sm:p-7">
                   <p className="eyebrow">Client Approach</p>
                   <h2 className="mt-4 text-3xl text-stone-950">
-                    London heritage paired with a modern service standard.
+                    New York heritage paired with a modern service standard.
                   </h2>
                   <p className="mt-4 text-sm leading-7 text-stone-600">
                     From secure dashboard access to cross-border payment support, the experience is
@@ -151,11 +152,7 @@ export default function HomePage() {
           </Card>
 
           <div className="panel overflow-hidden bg-[linear-gradient(135deg,#180607_0%,#401014_44%,#8B1E24_100%)] p-4 sm:p-5">
-            <img
-              alt="Meridian Alliance Trust UK premium card"
-              className="w-full rounded-[1.75rem] object-cover"
-              src="/images/meridian-premium-card.png"
-            />
+            <PremiumCardShowcase />
           </div>
         </div>
       </section>
@@ -165,7 +162,7 @@ export default function HomePage() {
           {featureCards.map((item) => (
             <Card key={item.title} title={item.title} description={item.copy}>
               <p className="text-sm leading-7 text-stone-600">
-                Meridian Alliance Trust UK keeps layouts spacious, readable, and consistent across
+                Meridian Alliance Trust USA keeps layouts spacious, readable, and consistent across
                 mobile and desktop use.
               </p>
             </Card>
@@ -178,7 +175,7 @@ export default function HomePage() {
           <div className="space-y-5">
             <p className="eyebrow">Security First</p>
             <h2 className="text-4xl text-stone-950 sm:text-5xl">
-              Discreet support for cards, onboarding, and sensitive enquiries.
+              Discreet support for cards, onboarding, and sensitive inquiries.
             </h2>
             <p className="max-w-xl text-base leading-8 text-stone-600">
               Every important action is framed with clear controls, soft visual hierarchy, and
@@ -244,7 +241,7 @@ export default function HomePage() {
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
             <div className="max-w-3xl">
               <p className="eyebrow text-white/60">Get Started</p>
-              <h2 className="mt-4 text-4xl sm:text-5xl">Step into Meridian Alliance Trust UK</h2>
+              <h2 className="mt-4 text-4xl sm:text-5xl">Step into Meridian Alliance Trust USA</h2>
               <p className="mt-4 text-base leading-8 text-white/75">
                 Reach support quickly, review service information, and use the protected login to
                 enter the private dashboard.

@@ -290,7 +290,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             items={[
               {
                 label: "Total Balance",
-                value: "£110,821.13",
+                value: "$110,821.13",
                 detail: "Checking and savings balances combined across your portfolio.",
               },
               {
@@ -346,7 +346,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
                 },
                 {
                   title: "Reference Details",
-                  description: "Review sort code, IBAN, branch, and statement settings.",
+                  description: "Review routing number, account numbers, branch, and statement settings.",
                   href: "/dashboard/accounts/account-details",
                 },
               ]}
@@ -375,7 +375,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             <DetailList
               items={[
                 { label: "Annual Rate", value: "2.10%" },
-                { label: "Last Interest Payout", value: "£150.21" },
+                { label: "Last Interest Payout", value: "$150.21" },
                 { label: "Reserve Goal Progress", value: "84%" },
                 { label: "Largest Allocation", value: "Emergency Reserve" },
               ]}
@@ -399,10 +399,10 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             <DetailList
               items={[
                 { label: "Account Holder", value: customerProfile.fullName },
-                { label: "Sort Code", value: "12-34-56" },
-                { label: "Checking IBAN", value: "GB82 MATR 1234 5612 3456 78" },
-                { label: "Savings IBAN", value: "GB82 MATR 1234 5676 5432 10" },
-                { label: "Branch", value: "London Private Banking Centre" },
+                { label: "Routing Number", value: "021000021" },
+                { label: "Checking Account Number", value: "4021944201" },
+                { label: "Savings Account Number", value: "1944862409" },
+                { label: "Branch", value: "New York Private Banking Center" },
                 { label: "Statement Delivery", value: "Paperless monthly statements" },
                 { label: "Client Tier", value: "Meridian Premier" },
                 { label: "Relationship Status", value: "Active and verified" },
@@ -447,7 +447,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
               },
               {
                 label: "This Month Outgoing",
-                value: "£29,842.40",
+                value: "$29,842.40",
                 detail: "Across domestic and international payment types.",
               },
             ]}
@@ -481,7 +481,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
       return (
         <RouteFrame page={page}>
           <TransferReviewCard
-            description="Move funds between your active Meridian Alliance Trust UK accounts."
+            description="Move funds between your active Meridian Alliance Trust USA accounts."
             fields={[
               {
                 label: "From account",
@@ -493,7 +493,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
                 options: ["Reserve Savings", "Everyday Checking"],
                 defaultValue: "Reserve Savings",
               },
-              { label: "Amount", placeholder: "£0.00", type: "text" },
+              { label: "Amount", placeholder: "$0.00", type: "text" },
               { label: "Reference", placeholder: "Monthly reserve funding" },
             ] satisfies TransferField[]}
             submitLabel="Review Transfer"
@@ -509,9 +509,9 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             description="Enter beneficiary details carefully before confirming a domestic transfer."
             fields={[
               { label: "Beneficiary name", placeholder: "Enter full beneficiary name" },
-              { label: "Sort code", placeholder: "00-00-00" },
-              { label: "Account number", placeholder: "12345678" },
-              { label: "Amount", placeholder: "£0.00", type: "text" },
+              { label: "Routing number", placeholder: "021000021" },
+              { label: "Account number", placeholder: "1234567890" },
+              { label: "Amount", placeholder: "$0.00", type: "text" },
               { label: "Payment reference", placeholder: "Invoice or reference", fullWidth: true },
             ] satisfies TransferField[]}
             submitLabel="Review Domestic Transfer"
@@ -532,10 +532,10 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
                 defaultValue: "Everyday Checking",
               },
               { label: "Beneficiary name", placeholder: "Enter beneficiary name" },
-              { label: "IBAN / Account", placeholder: "Recipient account number" },
+              { label: "Account / IBAN", placeholder: "Recipient account or IBAN" },
               { label: "SWIFT / BIC", placeholder: "Recipient bank SWIFT/BIC" },
               { label: "Country", placeholder: "Destination country" },
-              { label: "Amount", placeholder: "£0.00", type: "text" },
+              { label: "Amount", placeholder: "$0.00", type: "text" },
               { label: "Payment purpose", placeholder: "Transfer purpose", fullWidth: true },
             ] satisfies TransferField[]}
             submitLabel="Review International Transfer"
@@ -556,7 +556,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             <DetailList
               items={[
                 { label: "Primary Email", value: customerProfile.email },
-                { label: "Primary Mobile", value: "+44 7700 900123" },
+                { label: "Primary Mobile", value: "+1 (212) 555-0198" },
                 { label: "Push Notifications", value: "Enabled on two trusted devices" },
                 { label: "Digest Frequency", value: "Instant for security, daily for service notices" },
               ]}

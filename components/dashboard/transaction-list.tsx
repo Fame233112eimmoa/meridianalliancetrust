@@ -10,7 +10,7 @@ type TransactionListProps = {
 
 export function TransactionList({
   title = "Recent Transactions",
-  description = "Recent account activity for Meridian Alliance Trust UK.",
+  description = "Recent account activity for Meridian Alliance Trust USA.",
   items,
 }: TransactionListProps) {
   const postedCount = items.filter((item) => item.status !== "on-hold").length;

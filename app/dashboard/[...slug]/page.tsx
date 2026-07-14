@@ -26,7 +26,7 @@ export async function generateMetadata({
     return buildPrivateMetadata({
       path: "/dashboard",
       title: "Dashboard",
-      description: "Protected dashboard for Meridian Alliance Trust UK.",
+      description: "Protected dashboard for Meridian Alliance Trust USA.",
     });
   }
 

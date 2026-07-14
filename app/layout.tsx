@@ -66,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB">
+    <html lang="en-US">
       <body>
         <div className="relative min-h-screen overflow-x-hidden">
           <script

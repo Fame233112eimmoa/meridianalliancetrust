@@ -129,7 +129,7 @@ export const dashboardPages: DashboardPage[] = [
     href: "/dashboard/payments/internal-transfer",
     eyebrow: "Payments & Transfers",
     title: "Internal Transfer",
-    description: "Move funds between your Meridian Alliance Trust UK accounts.",
+    description: "Move funds between your Meridian Alliance Trust USA accounts.",
     highlights: [
       "Same-day movement is available between checking and savings.",
       "Balances refresh immediately after successful completion.",
@@ -143,9 +143,9 @@ export const dashboardPages: DashboardPage[] = [
     href: "/dashboard/payments/another-bank",
     eyebrow: "Payments & Transfers",
     title: "Transfer to Another Bank",
-    description: "Send domestic transfers to approved beneficiaries outside Meridian Alliance Trust UK.",
+    description: "Send domestic transfers to approved beneficiaries outside Meridian Alliance Trust USA.",
     highlights: [
-      "Verify sort code and account number carefully.",
+      "Verify routing number and account number carefully.",
       "Review whether the payment should be scheduled rather than sent immediately.",
       "Large-value domestic transfers remain subject to security review.",
     ],

@@ -6,7 +6,7 @@ import { buildPrivateMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPrivateMetadata({
   path: "/client-access",
   title: "Login Redirect",
-  description: "Legacy login path redirect for Meridian Alliance Trust UK.",
+  description: "Legacy login path redirect for Meridian Alliance Trust USA.",
 });
 
 export default function ClientAccessPage() {

@@ -46,11 +46,11 @@ const rawSiteUrl =
   LOCAL_FALLBACK_SITE_URL;
 
 export const siteConfig = {
-  name: "Meridian Alliance Trust UK",
+  name: "Meridian Alliance Trust USA",
   description:
-    "Website for Meridian Alliance Trust UK with service information, support pathways, and a protected dashboard login.",
+    "Website for Meridian Alliance Trust USA with service information, support pathways, and a protected dashboard login.",
   url: normalizeSiteUrl(rawSiteUrl),
-  locale: "en_GB",
+  locale: "en_US",
   logoPath: "/images/meridian-logo-monogram.jpg",
   ogImagePath: "/images/meridian-home-hero.jpg",
   googleVerification:
@@ -107,7 +107,7 @@ export function getSiteStructuredData() {
       name: siteConfig.name,
       url: siteConfig.url,
       description: siteConfig.description,
-      inLanguage: "en-GB",
+      inLanguage: "en-US",
     },
   ];
 }

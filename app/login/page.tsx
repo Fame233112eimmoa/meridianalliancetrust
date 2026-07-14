@@ -9,7 +9,7 @@ import { buildPrivateMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPrivateMetadata({
   path: "/login",
   title: "Login",
-  description: "Secure login for the Meridian Alliance Trust UK dashboard.",
+  description: "Secure login for the Meridian Alliance Trust USA dashboard.",
 });
 
 type LoginPageProps = {
