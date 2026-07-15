@@ -660,7 +660,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
           <Card description="Contact channels used for service communication." title="Delivery Methods">
             <DetailList
               items={[
-                { label: "Primary Email", value: customerProfile.email },
+                { label: "Customer ID", value: customerProfile.customerId },
                 { label: "Primary Mobile", value: "+44 7700 900123" },
                 { label: "Push Notifications", value: "Enabled on two trusted devices" },
                 { label: "Digest Frequency", value: "Instant for security, daily for service notices" },
@@ -708,7 +708,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             <DetailList
               items={[
                 { label: "Full Name", value: customerProfile.fullName },
-                { label: "Primary Email", value: customerProfile.email },
+                { label: "Customer ID", value: customerProfile.customerId },
                 { label: "Relationship Manager", value: customerProfile.relationshipManager },
                 { label: "Mailing Address", value: customerProfile.mailingAddress },
               ]}

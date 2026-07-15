@@ -1,5 +1,5 @@
 export const privateAccessConfig = {
-  accountName: process.env.PRIVATE_ACCESS_ACCOUNT_NAME?.trim() || "Richard Bahcnam",
+  accountName: process.env.PRIVATE_ACCESS_ACCOUNT_NAME?.trim() || "Richard Bachman",
   loginPath: "/login",
   otpPath: "/login/otp",
   portalPath: "/dashboard",

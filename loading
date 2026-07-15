@@ -248,4 +248,31 @@ Your branch is up to date with 'origin/main'.
 
 nothing to commit, working tree clean
 Everything up-to-date
+[1m[7m%[27m[1m[0m                                                                          [0m[27m[24m[Jkelvin@kelvins-MacBook-Pro meridianalliancetrustuk % [K[?2004h[7mgit add .[27m
+[7mgit commit -m "Fix sitemap and robots for custom domain"[27m[K
+[7mgit push origin main[27m[K[A[A[33C[27mg[27mi[27mt[27m [27ma[27md[27md[27m [27m.[1B[27mg[27mi[27mt[27m [27mc[27mo[27mm[27mm[27mi[27mt[27m [27m-[27mm[27m [27m"[27mF[27mi[27mx[27m [27ms[27mi[27mt[27me[27mm[27ma[27mp[27m [27ma[27mn[27md[27m [27mr[27mo[27mb[27mo[27mt[27ms[27m [27mf[27mo[27mr[27m [27mc[27mu[27ms[27mt[27mo[27mm[27m [27md[27mo[27mm[27ma[27mi[27mn[27m"[1B[27mg[27mi[27mt[27m [27mp[27mu[27ms[27mh[27m [27mo[27mr[27mi[27mg[27mi[27mn[27m [27mm[27ma[27mi[27mn[?2004l
+[main 2e00b8a] Fix sitemap and robots for custom domain
+ Committer: kelvin <kelvin@kelvins-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 43 insertions(+)
+Enumerating objects: 5, done.
+Counting objects:  20% (1/5)Counting objects:  40% (2/5)Counting objects:  60% (3/5)Counting objects:  80% (4/5)Counting objects: 100% (5/5)Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects:  33% (1/3)Compressing objects:  66% (2/3)Compressing objects: 100% (3/3)Compressing objects: 100% (3/3), done.
+Writing objects:  33% (1/3)Writing objects:  66% (2/3)Writing objects: 100% (3/3)Writing objects: 100% (3/3), 391 bytes | 391.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas:   0% (0/2)[Kremote: Resolving deltas:  50% (1/2)[Kremote: Resolving deltas: 100% (2/2)[Kremote: Resolving deltas: 100% (2/2), completed with 2 local objects.[K
+To https://github.com/Fame233112eimmoa/meridianalliancetrust.git
+   a62064a..2e00b8a  main -> main
 [1m[7m%[27m[1m[0m                                                                          [0m[27m[24m[Jkelvin@kelvins-MacBook-Pro meridianalliancetrustuk % [K[?2004h

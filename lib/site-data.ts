@@ -49,9 +49,9 @@ export type BankCard = {
 
 export const customerProfile = {
   firstName: "Richard",
-  lastName: "Bahcnam",
-  fullName: "Richard Bahcnam",
-  email: "richard.bahcnam.demo@example.com",
+  lastName: "Bachman",
+  fullName: "Richard Bachman",
+  customerId: "MTB-1024",
   relationshipManager: "Sophie Bennett",
   mailingAddress: "18 Belgrave Square, London SW1X 8PP",
 };
