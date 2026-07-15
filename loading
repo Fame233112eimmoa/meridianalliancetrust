@@ -293,3 +293,38 @@ After doing this, you may fix the identity used for this commit with:
     git commit --amend --reset-author
 
  5 files changed, 34 insertions(+), 7 deletions(-)
+Enumerating objects: 19, done.
+Counting objects:   5% (1/19)Counting objects:  10% (2/19)Counting objects:  15% (3/19)Counting objects:  21% (4/19)Counting objects:  26% (5/19)Counting objects:  31% (6/19)Counting objects:  36% (7/19)Counting objects:  42% (8/19)Counting objects:  47% (9/19)Counting objects:  52% (10/19)Counting objects:  57% (11/19)Counting objects:  63% (12/19)Counting objects:  68% (13/19)Counting objects:  73% (14/19)Counting objects:  78% (15/19)Counting objects:  84% (16/19)Counting objects:  89% (17/19)Counting objects:  94% (18/19)Counting objects: 100% (19/19)Counting objects: 100% (19/19), done.
+Delta compression using up to 8 threads
+Compressing objects:  10% (1/10)Compressing objects:  20% (2/10)Compressing objects:  30% (3/10)Compressing objects:  40% (4/10)Compressing objects:  50% (5/10)Compressing objects:  60% (6/10)Compressing objects:  70% (7/10)Compressing objects:  80% (8/10)Compressing objects:  90% (9/10)Compressing objects: 100% (10/10)Compressing objects: 100% (10/10), done.
+Writing objects:  10% (1/10)Writing objects:  20% (2/10)Writing objects:  30% (3/10)Writing objects:  40% (4/10)Writing objects:  50% (5/10)Writing objects:  60% (6/10)Writing objects:  70% (7/10)Writing objects:  80% (8/10)Writing objects:  90% (9/10)Writing objects: 100% (10/10)Writing objects: 100% (10/10), 935 bytes | 935.00 KiB/s, done.
+Total 10 (delta 9), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas:   0% (0/9)[Kremote: Resolving deltas:  11% (1/9)[Kremote: Resolving deltas:  22% (2/9)[Kremote: Resolving deltas:  33% (3/9)[Kremote: Resolving deltas:  44% (4/9)[Kremote: Resolving deltas:  55% (5/9)[Kremote: Resolving deltas:  66% (6/9)[Kremote: Resolving deltas:  77% (7/9)[Kremote: Resolving deltas:  88% (8/9)[Kremote: Resolving deltas: 100% (9/9)[Kremote: Resolving deltas: 100% (9/9), completed with 9 local objects.[K
+To https://github.com/Fame233112eimmoa/meridianalliancetrust.git
+   2e00b8a..723cea6  main -> main
+[1m[7m%[27m[1m[0m                                                                          [0m[27m[24m[Jkelvin@kelvins-MacBook-Pro meridianalliancetrustuk % [K[?2004h[7mgit add .[27m
+[7mgit commit -m "Update website"[27m[K
+[7mgit push origin main[27m[K[A[A[33C[27mg[27mi[27mt[27m [27ma[27md[27md[27m [27m.[1B[27mg[27mi[27mt[27m [27mc[27mo[27mm[27mm[27mi[27mt[27m [27m-[27mm[27m [27m"[27mU[27mp[27md[27ma[27mt[27me[27m [27mw[27me[27mb[27ms[27mi[27mt[27me[27m"[1B[27mg[27mi[27mt[27m [27mp[27mu[27ms[27mh[27m [27mo[27mr[27mi[27mg[27mi[27mn[27m [27mm[27ma[27mi[27mn[?2004l
+[main a5a8336] Update website
+ Committer: kelvin <kelvin@kelvins-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+Enumerating objects: 5, done.
+Counting objects:  20% (1/5)Counting objects:  40% (2/5)Counting objects:  60% (3/5)Counting objects:  80% (4/5)Counting objects: 100% (5/5)Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects:  33% (1/3)Compressing objects:  66% (2/3)Compressing objects: 100% (3/3)Compressing objects: 100% (3/3), done.
+Writing objects:  33% (1/3)Writing objects:  66% (2/3)Writing objects: 100% (3/3)Writing objects: 100% (3/3), 367 bytes | 367.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas:   0% (0/2)[Kremote: Resolving deltas:  50% (1/2)[Kremote: Resolving deltas: 100% (2/2)[Kremote: Resolving deltas: 100% (2/2), completed with 2 local objects.[K
+To https://gith
