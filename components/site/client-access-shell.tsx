@@ -24,12 +24,12 @@ export function ClientAccessShell({
           <p className="mt-5 max-w-lg text-base leading-8 text-white/78">{description}</p>
           <div className="mt-10 grid gap-3">
             <div className="rounded-[1.5rem] border border-white/10 bg-white/10 px-5 py-4 text-sm leading-7 text-white/78">
-              Dashboard access is limited to the approved credentials, a one-time passcode, and
-              a signed server session.
+              Dashboard access is limited to the approved customer profiles, a one-time passcode,
+              and a signed server session.
             </div>
             <div className="rounded-[1.5rem] border border-white/10 bg-white/10 px-5 py-4 text-sm leading-7 text-white/78">
-              Update the configured customer number, password, or OTP later from your environment
-              settings and redeploy whenever you need to rotate access.
+              Update the configured customer IDs, passwords, or OTP codes later from your
+              environment settings and redeploy whenever you need to rotate access.
             </div>
           </div>
         </section>

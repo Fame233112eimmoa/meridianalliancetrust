@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
-  getPrivateAccessCredentialValue,
+  getPrivateAccessSessionSecret,
   hasPrivateAccessCredentialConfiguration,
 } from "@/lib/private-access-credentials";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
+import { findPrivateAccessProfileByCustomerNumber } from "@/lib/private-access-profiles";
 import { buildRedirectUrl } from "@/lib/request-url";
 
 const encoder = new TextEncoder();
@@ -39,12 +40,8 @@ async function createSignature(key: string, value: string) {
   return toHex(signature);
 }
 
-function getApprovedCustomerNumber() {
-  return normalizeCustomerNumber(getPrivateAccessCredentialValue("customerNumber"));
-}
-
 async function getSessionSecret() {
-  return getPrivateAccessCredentialValue("sessionSecret");
+  return getPrivateAccessSessionSecret();
 }
 
 async function hasValidCookie(
@@ -68,7 +65,10 @@ async function hasValidCookie(
     `${scope}:${customerNumber}`,
   );
 
-  return customerNumber === getApprovedCustomerNumber() && signature === expectedSignature;
+  return Boolean(
+    findPrivateAccessProfileByCustomerNumber(customerNumber) &&
+      signature === expectedSignature,
+  );
 }
 
 function clearPrivateCookies(response: NextResponse) {

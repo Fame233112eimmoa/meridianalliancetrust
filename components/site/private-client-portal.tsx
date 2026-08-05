@@ -16,8 +16,8 @@ export function PrivateClientPortal({
           <p className="eyebrow">Secure Dashboard</p>
           <h1 className="text-4xl text-stone-950 sm:text-5xl">Welcome back, {accountName}</h1>
           <p className="max-w-3xl text-base leading-7 text-stone-600">
-            This dashboard is restricted to the approved customer number, password, OTP, and
-            signed server session configured for this deployment.
+            This dashboard is restricted to the signed-in customer profile, its approved
+            credentials, and the signed server session configured for this deployment.
           </p>
         </div>
         <form action="/api/logout" method="post">
@@ -30,7 +30,7 @@ export function PrivateClientPortal({
       <div className="grid gap-6 lg:grid-cols-3">
         <Card
           title="Approved Customer Number"
-          description="The exact customer number currently allowed through the protected login flow."
+          description="The exact customer number associated with the current protected session."
         >
           <p className="text-base font-medium text-stone-950">{approvedCustomerNumber}</p>
         </Card>
@@ -40,8 +40,9 @@ export function PrivateClientPortal({
           description="Both values can be changed later from your deployment environment."
         >
           <p className="text-sm leading-7 text-stone-600">
-            Update `PRIVATE_ACCESS_PASSWORD`, `PRIVATE_ACCESS_OTP`, and
-            `PRIVATE_ACCESS_SESSION_SECRET`, then redeploy when you want to rotate access.
+            Update `PRIVATE_ACCESS_PASSWORD`, `PRIVATE_ACCESS_PASSWORD_2`, `PRIVATE_ACCESS_OTP`,
+            `PRIVATE_ACCESS_OTP_2`, and `PRIVATE_ACCESS_SESSION_SECRET`, then redeploy when you
+            want to rotate access.
           </p>
         </Card>
 

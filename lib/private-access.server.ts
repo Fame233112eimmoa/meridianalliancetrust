@@ -3,10 +3,15 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest, NextResponse } from "next/server";
 import {
-  getPrivateAccessCredentialValue,
+  getPrivateAccessCredentialProfiles,
+  getPrivateAccessSessionSecret,
   hasPrivateAccessCredentialConfiguration,
 } from "@/lib/private-access-credentials";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
+import {
+  findPrivateAccessProfileByCustomerNumber,
+  type PrivateAccessProfile,
+} from "@/lib/private-access-profiles";
 
 function normalizeCustomerNumber(value: string) {
   return value.trim().toUpperCase();
@@ -23,34 +28,21 @@ function safeEqual(left: string, right: string) {
   return timingSafeEqual(leftBuffer, rightBuffer);
 }
 
-function getApprovedCustomerNumber() {
-  return normalizeCustomerNumber(getPrivateAccessCredentialValue("customerNumber"));
-}
-
-function getApprovedPassword() {
-  return getPrivateAccessCredentialValue("password");
-}
-
-function getApprovedOtp() {
-  return getPrivateAccessCredentialValue("otp");
-}
-
-function getSessionSecret() {
-  return getPrivateAccessCredentialValue("sessionSecret");
-}
-
 function buildSignature(scope: "pending" | "authenticated", customerNumber: string) {
-  return createHmac("sha256", getSessionSecret())
+  return createHmac("sha256", getPrivateAccessSessionSecret())
     .update(`${scope}:${customerNumber}`)
     .digest("hex");
 }
 
-function buildCookieValue(scope: "pending" | "authenticated") {
-  const customerNumber = getApprovedCustomerNumber();
-  return `${customerNumber}.${buildSignature(scope, customerNumber)}`;
+function buildCookieValue(scope: "pending" | "authenticated", customerNumber: string) {
+  const normalizedCustomerNumber = normalizeCustomerNumber(customerNumber);
+  return `${normalizedCustomerNumber}.${buildSignature(scope, normalizedCustomerNumber)}`;
 }
 
-function readCookieValue(scope: "pending" | "authenticated", value?: string) {
+function readCustomerNumberFromCookieValue(
+  scope: "pending" | "authenticated",
+  value?: string,
+) {
   if (!value) {
     return null;
   }
@@ -70,11 +62,9 @@ function readCookieValue(scope: "pending" | "authenticated", value?: string) {
     return null;
   }
 
-  if (!safeEqual(normalizedCustomerNumber, getApprovedCustomerNumber())) {
-    return null;
-  }
-
-  return normalizedCustomerNumber;
+  return findPrivateAccessProfileByCustomerNumber(normalizedCustomerNumber)
+    ? normalizedCustomerNumber
+    : null;
 }
 
 function setCookie(
@@ -92,63 +82,79 @@ function setCookie(
   });
 }
 
+function getProfileByCustomerNumber(customerNumber: string) {
+  return findPrivateAccessProfileByCustomerNumber(customerNumber);
+}
+
 export function hasPrivateAccessConfiguration() {
   return hasPrivateAccessCredentialConfiguration();
 }
 
-export function isApprovedCustomerNumber(customerNumber: string) {
-  return safeEqual(
-    normalizeCustomerNumber(customerNumber),
-    getApprovedCustomerNumber(),
+export function getPrivateAccessProfileForCredentials(
+  customerNumber: string,
+  password: string,
+) {
+  const profile = getProfileByCustomerNumber(customerNumber);
+
+  if (!profile) {
+    return null;
+  }
+
+  return safeEqual(password, profile.password) ? profile : null;
+}
+
+export function isApprovedOtpForProfile(profile: PrivateAccessProfile, otp: string) {
+  return safeEqual(otp.trim(), profile.otp.trim());
+}
+
+export function getPendingCustomerNumberFromRequest(request: NextRequest) {
+  return readCustomerNumberFromCookieValue(
+    "pending",
+    request.cookies.get(privateAccessCookieNames.pending)?.value,
   );
 }
 
-export function isApprovedPassword(password: string) {
-  return safeEqual(password, getApprovedPassword());
-}
-
-export function isApprovedOtp(otp: string) {
-  return safeEqual(otp.trim(), getApprovedOtp());
+export function getPendingPrivateAccessProfileFromRequest(request: NextRequest) {
+  const customerNumber = getPendingCustomerNumberFromRequest(request);
+  return customerNumber ? getProfileByCustomerNumber(customerNumber) : null;
 }
 
 export function hasPendingAccessFromRequest(request: NextRequest) {
-  return Boolean(
-    readCookieValue("pending", request.cookies.get(privateAccessCookieNames.pending)?.value),
-  );
+  return Boolean(getPendingCustomerNumberFromRequest(request));
 }
 
-export function hasAuthenticatedAccessFromRequest(request: NextRequest) {
-  return Boolean(
-    readCookieValue(
-      "authenticated",
-      request.cookies.get(privateAccessCookieNames.authenticated)?.value,
-    ),
-  );
+export function getAuthenticatedCustomerNumberFromCookieValue(value?: string) {
+  return readCustomerNumberFromCookieValue("authenticated", value);
+}
+
+export function getAuthenticatedPrivateAccessProfileFromCookieValue(value?: string) {
+  const customerNumber = getAuthenticatedCustomerNumberFromCookieValue(value);
+  return customerNumber ? getProfileByCustomerNumber(customerNumber) : null;
 }
 
 export function hasPendingAccessFromCookieValue(value?: string) {
-  return Boolean(readCookieValue("pending", value));
+  return Boolean(readCustomerNumberFromCookieValue("pending", value));
 }
 
 export function hasAuthenticatedAccessFromCookieValue(value?: string) {
-  return Boolean(readCookieValue("authenticated", value));
+  return Boolean(readCustomerNumberFromCookieValue("authenticated", value));
 }
 
-export function setPendingAccess(response: NextResponse) {
+export function setPendingAccess(response: NextResponse, customerNumber: string) {
   setCookie(
     response,
     privateAccessCookieNames.pending,
-    buildCookieValue("pending"),
+    buildCookieValue("pending", customerNumber),
     15 * 60,
   );
   response.cookies.delete(privateAccessCookieNames.authenticated);
 }
 
-export function setAuthenticatedAccess(response: NextResponse) {
+export function setAuthenticatedAccess(response: NextResponse, customerNumber: string) {
   setCookie(
     response,
     privateAccessCookieNames.authenticated,
-    buildCookieValue("authenticated"),
+    buildCookieValue("authenticated", customerNumber),
     8 * 60 * 60,
   );
   response.cookies.delete(privateAccessCookieNames.pending);
@@ -160,12 +166,16 @@ export function clearPrivateAccess(response: NextResponse) {
 }
 
 export function getApprovedPrivateAccessCustomerNumber() {
-  return getPrivateAccessCredentialValue("customerNumber");
+  return getPrivateAccessCredentialProfiles()[0]?.customerNumber || "";
 }
 
-export function getPrivateAccessPortalSummary() {
+export function getPrivateAccessPortalSummary(customerNumber?: string) {
+  const profile = customerNumber
+    ? getProfileByCustomerNumber(customerNumber)
+    : getProfileByCustomerNumber(getApprovedPrivateAccessCustomerNumber());
+
   return {
-    accountName: privateAccessConfig.accountName,
-    approvedCustomerNumber: getApprovedPrivateAccessCustomerNumber(),
+    accountName: profile?.customerProfile.fullName || privateAccessConfig.accountName,
+    approvedCustomerNumber: profile?.customerNumber || getApprovedPrivateAccessCustomerNumber(),
   };
 }

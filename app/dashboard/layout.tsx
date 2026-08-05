@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { privateAccessConfig, privateAccessCookieNames } from "@/lib/private-access";
 import {
-  hasAuthenticatedAccessFromCookieValue,
+  getAuthenticatedPrivateAccessProfileFromCookieValue,
   hasPrivateAccessConfiguration,
 } from "@/lib/private-access.server";
 
@@ -18,11 +18,11 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   }
 
   const cookieStore = await cookies();
-  const authenticated = hasAuthenticatedAccessFromCookieValue(
+  const authenticatedProfile = getAuthenticatedPrivateAccessProfileFromCookieValue(
     cookieStore.get(privateAccessCookieNames.authenticated)?.value,
   );
 
-  if (!authenticated) {
+  if (!authenticatedProfile) {
     redirect(privateAccessConfig.loginPath);
   }
 

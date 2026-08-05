@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { privateAccessConfig } from "@/lib/private-access";
 import {
   clearPrivateAccess,
+  getPendingPrivateAccessProfileFromRequest,
   hasPrivateAccessConfiguration,
-  hasPendingAccessFromRequest,
-  isApprovedOtp,
+  isApprovedOtpForProfile,
   setAuthenticatedAccess,
 } from "@/lib/private-access.server";
 import { buildRedirectUrl } from "@/lib/request-url";
@@ -19,7 +19,9 @@ export async function POST(request: NextRequest) {
     return response;
   }
 
-  if (!hasPendingAccessFromRequest(request)) {
+  const pendingProfile = getPendingPrivateAccessProfileFromRequest(request);
+
+  if (!pendingProfile) {
     const response = NextResponse.redirect(
       buildRedirectUrl(request, privateAccessConfig.loginPath),
       303,
@@ -31,7 +33,7 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const otp = String(formData.get("otp") || "");
 
-  if (!isApprovedOtp(otp)) {
+  if (!isApprovedOtpForProfile(pendingProfile, otp)) {
     return NextResponse.redirect(
       buildRedirectUrl(request, `${privateAccessConfig.otpPath}?error=otp`),
       303,
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
     buildRedirectUrl(request, privateAccessConfig.portalPath),
     303,
   );
-  setAuthenticatedAccess(response);
+  setAuthenticatedAccess(response, pendingProfile.customerNumber);
   return response;
 }
 

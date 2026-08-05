@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { privateAccessConfig } from "@/lib/private-access";
 import {
   clearPrivateAccess,
+  getPrivateAccessProfileForCredentials,
   hasPrivateAccessConfiguration,
-  isApprovedCustomerNumber,
-  isApprovedPassword,
   setPendingAccess,
 } from "@/lib/private-access.server";
 import { buildRedirectUrl } from "@/lib/request-url";
@@ -23,8 +22,9 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const customerNumber = String(formData.get("customerNumber") || "");
   const password = String(formData.get("password") || "");
+  const profile = getPrivateAccessProfileForCredentials(customerNumber, password);
 
-  if (!isApprovedCustomerNumber(customerNumber) || !isApprovedPassword(password)) {
+  if (!profile) {
     const response = NextResponse.redirect(
       buildRedirectUrl(request, `${privateAccessConfig.loginPath}?error=credentials`),
       303,
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   }
 
   const response = NextResponse.redirect(buildRedirectUrl(request, privateAccessConfig.otpPath), 303);
-  setPendingAccess(response);
+  setPendingAccess(response, profile.customerNumber);
   return response;
 }
 

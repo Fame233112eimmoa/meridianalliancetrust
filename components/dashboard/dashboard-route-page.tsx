@@ -11,18 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import type { DashboardPage } from "@/lib/dashboard-data";
-import {
-  accounts,
-  cards,
-  customerProfile,
-  loginActivities,
-  notifications,
-  transactions,
-  trustedDevices,
-} from "@/lib/site-data";
+import type { PrivateAccessProfile } from "@/lib/private-access-profiles";
 
 type DashboardRoutePageProps = {
   page: DashboardPage;
+  profile: PrivateAccessProfile;
 };
 
 type StatItem = {
@@ -158,14 +151,23 @@ function ActivityFeed({
   );
 }
 
-function DeviceList() {
+function DeviceList({
+  items,
+}: {
+  items: Array<{
+    name: string;
+    location: string;
+    lastActive: string;
+    status: string;
+  }>;
+}) {
   return (
     <Card
       description="Trusted devices currently recognised for private access."
       title="Trusted Devices"
     >
       <div className="space-y-4">
-        {trustedDevices.map((device) => (
+        {items.map((device) => (
           <div key={`${device.name}-${device.lastActive}`} className="rounded-[1.5rem] border border-stone-200/80 bg-stone-50 p-5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
@@ -239,24 +241,65 @@ function ToggleList({
   );
 }
 
-export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
+function parseCurrencyValue(value: string) {
+  return Number(value.replace(/[^0-9.-]+/g, ""));
+}
+
+function formatCurrencyValue(value: number) {
+  return new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+export function DashboardRoutePage({ page, profile }: DashboardRoutePageProps) {
+  const {
+    accountDetails,
+    accounts,
+    cards,
+    customerProfile,
+    loginActivities,
+    notificationDelivery,
+    notifications,
+    paymentSummary,
+    profileNotes,
+    savingsSnapshot,
+    securitySummary,
+    transactions,
+    trustedDevices,
+  } = profile;
   const checkingTransactions = transactions.filter((item) => item.account === "Checking");
   const savingsTransactions = transactions.filter((item) => item.account === "Savings");
+  const totalBalance = formatCurrencyValue(
+    accounts.reduce((sum, account) => sum + parseCurrencyValue(account.balance), 0),
+  );
+  const accountNames = accounts.map((account) => account.name);
+  const primaryAccountName = accountNames[0] || "Everyday Checking";
+  const secondaryAccountName = accountNames[1] || "Reserve Savings";
+  const routePage =
+    page.routePath === ""
+      ? {
+          ...page,
+          title: `Welcome back, ${customerProfile.fullName}`,
+        }
+      : page;
 
   switch (page.routePath) {
     case "":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <StatGrid
             items={[
               {
                 label: "Total Balance",
-                value: "£5,232,030.00",
+                value: totalBalance,
                 detail: "Checking and savings balances combined across your portfolio.",
               },
               {
                 label: "Security Score",
-                value: "96 / 100",
+                value: securitySummary.score,
                 detail: "Two-factor authentication and trusted devices are both active.",
               },
             ]}
@@ -280,7 +323,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "accounts":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <div className="grid gap-6 xl:grid-cols-2">
             {accounts.map((account) => (
               <AccountCard key={account.number} account={account} />
@@ -316,7 +359,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "accounts/checking-account":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <AccountCard account={accounts[0]} />
           <TransactionList
             description="Recent debits and credits from the primary spending account."
@@ -328,15 +371,15 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "accounts/savings-account":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <AccountCard account={accounts[1]} />
           <Card description="A simple view of the reserve account." title="Savings Snapshot">
             <DetailList
               items={[
-                { label: "Annual Rate", value: "2.10%" },
-                { label: "Last Interest Payout", value: "£150.21" },
-                { label: "Reserve Goal Progress", value: "84%" },
-                { label: "Largest Allocation", value: "Emergency Reserve" },
+                { label: "Annual Rate", value: savingsSnapshot.annualRate },
+                { label: "Last Interest Payout", value: savingsSnapshot.lastInterestPayout },
+                { label: "Reserve Goal Progress", value: savingsSnapshot.reserveGoalProgress },
+                { label: "Largest Allocation", value: savingsSnapshot.largestAllocation },
               ]}
             />
           </Card>
@@ -350,7 +393,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "accounts/account-details":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <Card
             description="Key account information and servicing details."
             title="Reference Details"
@@ -358,13 +401,13 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             <DetailList
               items={[
                 { label: "Account Holder", value: customerProfile.fullName },
-                { label: "Sort Code", value: "12-34-56" },
-                { label: "Checking IBAN", value: "GB82 MATR 1234 5612 3456 78" },
-                { label: "Savings IBAN", value: "GB82 MATR 1234 5676 5432 10" },
-                { label: "Branch", value: "London Private Banking Centre" },
-                { label: "Statement Delivery", value: "Paperless monthly statements" },
-                { label: "Client Tier", value: "Meridian Premier" },
-                { label: "Relationship Status", value: "Active and verified" },
+                { label: "Sort Code", value: accountDetails.sortCode },
+                { label: "Checking IBAN", value: accountDetails.checkingIban },
+                { label: "Savings IBAN", value: accountDetails.savingsIban },
+                { label: "Branch", value: accountDetails.branch },
+                { label: "Statement Delivery", value: accountDetails.statementDelivery },
+                { label: "Client Tier", value: accountDetails.clientTier },
+                { label: "Relationship Status", value: accountDetails.relationshipStatus },
               ]}
             />
           </Card>
@@ -373,7 +416,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "transactions":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <TransactionList
             description="Combined checking and savings account activity."
             items={transactions}
@@ -384,29 +427,29 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "cards":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <CardsOverview cardholderName={customerProfile.fullName} cards={cards} />
         </RouteFrame>
       );
 
     case "payments":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <StatGrid
             items={[
               {
                 label: "Scheduled Payments",
-                value: "4",
+                value: paymentSummary.scheduledPayments,
                 detail: "Upcoming over the next 14 days.",
               },
               {
                 label: "Pending Review",
-                value: "0",
+                value: paymentSummary.pendingReview,
                 detail: "There are no payment items awaiting review right now.",
               },
               {
                 label: "This Month Outgoing",
-                value: "£29,842.40",
+                value: paymentSummary.outgoingThisMonth,
                 detail: "Across domestic and international payment types.",
               },
             ]}
@@ -438,7 +481,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "payments/internal-transfer":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <TransferReviewCard
             description="Move funds between your active Meridian Alliance Trust UK accounts."
             sections={[
@@ -447,13 +490,13 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
                 fields: [
                   {
                     label: "From account",
-                    options: ["Everyday Checking", "Reserve Savings"],
-                    defaultValue: "Everyday Checking",
+                    options: accountNames,
+                    defaultValue: primaryAccountName,
                   },
                   {
                     label: "To account",
-                    options: ["Reserve Savings", "Everyday Checking"],
-                    defaultValue: "Reserve Savings",
+                    options: [secondaryAccountName, primaryAccountName],
+                    defaultValue: secondaryAccountName,
                   },
                   {
                     label: "Amount",
@@ -487,7 +530,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "payments/another-bank":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <TransferReviewCard
             description="Enter beneficiary details carefully before confirming a domestic transfer."
             sections={[
@@ -496,8 +539,8 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
                 fields: [
                   {
                     label: "From account",
-                    options: ["Everyday Checking", "Reserve Savings"],
-                    defaultValue: "Everyday Checking",
+                    options: accountNames,
+                    defaultValue: primaryAccountName,
                   },
                   {
                     label: "Beneficiary name",
@@ -554,7 +597,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "payments/international":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <TransferReviewCard
             description="Provide the required recipient and settlement details for a cross-border payment."
             sections={[
@@ -563,8 +606,8 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
                 fields: [
                   {
                     label: "From account",
-                    options: ["Everyday Checking", "Reserve Savings"],
-                    defaultValue: "Everyday Checking",
+                    options: accountNames,
+                    defaultValue: primaryAccountName,
                   },
                   {
                     label: "Currency",
@@ -651,7 +694,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "notifications":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <ActivityFeed
             description="The latest notices surfaced for this client relationship."
             items={notifications}
@@ -661,9 +704,9 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             <DetailList
               items={[
                 { label: "Customer ID", value: customerProfile.customerId },
-                { label: "Primary Mobile", value: "+44 7700 900123" },
-                { label: "Push Notifications", value: "Enabled on two trusted devices" },
-                { label: "Digest Frequency", value: "Instant for security, daily for service notices" },
+                { label: "Primary Mobile", value: notificationDelivery.primaryMobile },
+                { label: "Push Notifications", value: notificationDelivery.pushNotifications },
+                { label: "Digest Frequency", value: notificationDelivery.digestFrequency },
               ]}
             />
           </Card>
@@ -672,7 +715,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "security":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <StatGrid
             items={[
               {
@@ -682,12 +725,12 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
               },
               {
                 label: "Trusted Devices",
-                value: "3",
+                value: String(trustedDevices.length),
                 detail: "All active sessions are recognised and current.",
               },
               {
                 label: "Recent Security Alerts",
-                value: "0",
+                value: securitySummary.recentAlerts,
                 detail: "No unresolved sign-in or device warnings detected.",
               },
             ]}
@@ -697,13 +740,13 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
             items={loginActivities}
             title="Login Activity"
           />
-          <DeviceList />
+          <DeviceList items={trustedDevices} />
         </RouteFrame>
       );
 
     case "profile":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <Card description="Verified customer and relationship details." title="Account Holder Profile">
             <DetailList
               items={[
@@ -716,11 +759,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
           </Card>
           <InfoHighlights
             description="Profile service notes for this relationship."
-            items={[
-              "Relationship servicing is active and current.",
-              "Paperless statements remain enabled for both accounts.",
-              "Client identity and access checks are verified.",
-            ]}
+            items={profileNotes}
             title="Profile Notes"
           />
         </RouteFrame>
@@ -728,7 +767,7 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     case "settings":
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <ToggleList
             description="Simple preference controls for alerts and dashboard behaviour."
             items={[
@@ -759,11 +798,11 @@ export function DashboardRoutePage({ page }: DashboardRoutePageProps) {
 
     default:
       return (
-        <RouteFrame page={page}>
+        <RouteFrame page={routePage}>
           <InfoHighlights
-            description={page.description}
-            items={page.highlights ?? []}
-            title={page.title}
+            description={routePage.description}
+            items={routePage.highlights ?? []}
+            title={routePage.title}
           />
         </RouteFrame>
       );
