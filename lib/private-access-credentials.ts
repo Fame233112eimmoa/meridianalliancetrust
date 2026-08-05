@@ -11,11 +11,15 @@ export type PrivateAccessCredentialProfile = {
   otp: string;
 };
 
-type PrivateAccessCredentialField = Omit<PrivateAccessCredentialProfile, "id">;
+type PrivateAccessCredentialDefaults = Omit<PrivateAccessCredentialProfile, "id">;
+type PrivateAccessCredentialSecretField = Omit<
+  PrivateAccessCredentialDefaults,
+  "accountName"
+>;
 
 const privateAccessCredentialProfileDefaults: Record<
   PrivateAccessCredentialProfileId,
-  PrivateAccessCredentialField
+  PrivateAccessCredentialDefaults
 > = {
   primary: {
     accountName: "Richard Bachman",
@@ -33,16 +37,14 @@ const privateAccessCredentialProfileDefaults: Record<
 
 const privateAccessCredentialProfileEnvNames: Record<
   PrivateAccessCredentialProfileId,
-  Record<keyof PrivateAccessCredentialField, string>
+  Record<keyof PrivateAccessCredentialSecretField, string>
 > = {
   primary: {
-    accountName: "PRIVATE_ACCESS_ACCOUNT_NAME",
     customerNumber: "PRIVATE_ACCESS_CUSTOMER_NUMBER",
     password: "PRIVATE_ACCESS_PASSWORD",
     otp: "PRIVATE_ACCESS_OTP",
   },
   secondary: {
-    accountName: "PRIVATE_ACCESS_ACCOUNT_NAME_2",
     customerNumber: "PRIVATE_ACCESS_CUSTOMER_NUMBER_2",
     password: "PRIVATE_ACCESS_PASSWORD_2",
     otp: "PRIVATE_ACCESS_OTP_2",
@@ -54,7 +56,7 @@ const sessionSecretDefault = "meridian-private-access-demo-session-secret-2026-0
 
 function getProfileValue(
   profileId: PrivateAccessCredentialProfileId,
-  field: keyof PrivateAccessCredentialField,
+  field: keyof PrivateAccessCredentialSecretField,
 ) {
   const envName = privateAccessCredentialProfileEnvNames[profileId][field];
   return process.env[envName]?.trim() || privateAccessCredentialProfileDefaults[profileId][field];
@@ -63,7 +65,7 @@ function getProfileValue(
 export function getPrivateAccessCredentialProfiles(): PrivateAccessCredentialProfile[] {
   return privateAccessCredentialProfileIds.map((profileId) => ({
     id: profileId,
-    accountName: getProfileValue(profileId, "accountName"),
+    accountName: privateAccessCredentialProfileDefaults[profileId].accountName,
     customerNumber: getProfileValue(profileId, "customerNumber"),
     password: getProfileValue(profileId, "password"),
     otp: getProfileValue(profileId, "otp"),
